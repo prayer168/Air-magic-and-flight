@@ -668,28 +668,48 @@ const Nav = {
 const AirDemo = {
   init(){
     const push=$("#air-push"), out=$("#air-push-out"), col=$("#air-col"), rod=$("#air-rod"), plg=$("#air-plunger"), dots=$("#air-dots");
-    // 空氣分子點
-    let pd="";
-    for(let i=0;i<22;i++){ pd+='<circle r="2.4" fill="#0369a1" opacity="0.7"/>'; }
+    const Y0=50, Y1=100, X0=25; // 空氣柱內部範圍（y 固定、x 隨壓縮改變）
+    const colWidth=()=> 200*(1-(+push.value)/100);   // 空氣柱寬（被壓縮）
+    // 空氣分子：持續隨機運動，速度隨壓縮變快
+    let pd=""; for(let i=0;i<22;i++){ pd+='<circle r="2.4" fill="#0369a1" opacity="0.75"/>'; }
     dots.innerHTML=pd; const dEls=$$("circle",dots);
-    const seedX=[], seedY=[];
-    for(let i=0;i<dEls.length;i++){ seedX.push(0.06+Math.random()*0.88); seedY.push(0.12+Math.random()*0.76); }
+    const parts=dEls.map(()=>({ x:X0+Math.random()*180, y:Y0+Math.random()*(Y1-Y0), a:Math.random()*Math.PI*2 }));
+    function place(){ // 靜態擺放（減少動態模式或初始）
+      const w=colWidth(); parts.forEach((pt,i)=>{ pt.x=X0+3+Math.random()*(w-6); pt.y=Y0+2+Math.random()*(Y1-Y0-4);
+        dEls[i].setAttribute("cx",pt.x); dEls[i].setAttribute("cy",pt.y); }); }
     function draw(){
       const p=+push.value; out.textContent=p+" %";
-      const full=200, w=full*(1-p/100); // 空氣柱寬（被壓縮）
+      const w=colWidth();
       col.setAttribute("width",w);
-      col.setAttribute("opacity", (0.45+p/160).toFixed(2));
-      plg.setAttribute("x", 23+w);
-      rod.setAttribute("x", 35+w);
-      dEls.forEach((c,i)=>{ c.setAttribute("cx", 25+seedX[i]*w); c.setAttribute("cy", 50+seedY[i]*50); });
+      col.setAttribute("opacity",(0.4+p/150).toFixed(2));
+      plg.setAttribute("x",23+w);
+      rod.setAttribute("x",35+w);
       let msg;
-      if(p===0) msg="空氣裝滿針筒。";
-      else if(p<45) msg="空氣被壓小了！分子擠在一起，但推起來越來越費力。";
-      else msg="很難再壓下去了 —— 因為空氣真的佔有空間，擠不完！";
+      if(p===0) msg="空氣裝滿針筒，分子在裡面到處亂跑。";
+      else if(p<45) msg="空氣被壓小了！分子擠在一起、撞得更頻繁、跑得更快，推起來越來越費力。";
+      else msg="很難再壓下去了 —— 空氣真的佔有空間，擠不完！分子被擠得又密又快（壓縮會讓氣體升溫）。";
       $("#air-readout").textContent=msg;
+      if(Settings.noAnim) place();   // 減少動態：不跑動畫，直接靜態擺放
       if(p>0) Nav.markDone(1);
     }
-    push.oninput=draw; draw();
+    // 分子持續運動迴圈（僅在本章顯示且未開啟減少動態時運作）
+    function loop(){
+      requestAnimationFrame(loop);
+      const chap=document.getElementById("chap-2");
+      if(Settings.noAnim || !chap.classList.contains("is-active")) return;
+      const p=+push.value, w=colWidth(), xMax=X0+Math.max(6,w)-3;
+      const spd=(0.4 + p/100*1.9) * Settings.speed;  // 壓縮越多 → 分子越快
+      parts.forEach((pt,i)=>{
+        pt.a += (Math.random()-0.5)*0.7;             // 隨機改變方向（分子亂度）
+        pt.x += Math.cos(pt.a)*spd; pt.y += Math.sin(pt.a)*spd;
+        if(pt.x<X0){ pt.x=X0; pt.a=Math.PI-pt.a; }
+        if(pt.x>xMax){ pt.x=xMax; pt.a=Math.PI-pt.a; } // 撞活塞/管壁反彈
+        if(pt.y<Y0){ pt.y=Y0; pt.a=-pt.a; }
+        if(pt.y>Y1){ pt.y=Y1; pt.a=-pt.a; }
+        dEls[i].setAttribute("cx",pt.x.toFixed(1)); dEls[i].setAttribute("cy",pt.y.toFixed(1));
+      });
+    }
+    push.oninput=draw; draw(); place(); requestAnimationFrame(loop);
     // 倒扣杯子
     const cupG=$("#cup-g");
     $("#cup-push").onclick=()=>{
