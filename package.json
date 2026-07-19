@@ -1,7 +1,7 @@
 {
   "name": "air-magic-and-flight",
-  "version": "1.0.0",
-  "description": "國小自然科互動數位教材：空氣魔法與飛行（紙飛機設計、吹箭、氣球火箭、空氣砲）",
+  "version": "2.0.0",
+  "description": "空氣魔法與飛行互動實驗室：國小到國中的空氣與飛行互動數位教材，十個模擬實驗＋探究流程＋探究紀錄表＋評量。",
   "private": true,
   "homepage": "https://prayer168.github.io/Air-magic-and-flight/"
 }
