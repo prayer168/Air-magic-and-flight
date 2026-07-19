@@ -912,24 +912,39 @@ const EXPERIMENTS = {
       readout:"出口速度 <b>"+rnd2(vexit)+" m/s</b>，飛了 "+rnd2(dist)+" m，距離目標("+s.target+" m) 差 "+rnd2(err)+" m。"+
         (hit?"🎯 命中目標！":"調整吹氣力量或角度再試。")+(s.tubeLen>=60?" 長管讓空氣有更長距離加速，出口更快。":"")};
   },
-  scene:{ vb:"0 0 640 260", aria:"吹管發射模擬：發射物飛出後的弧線與目標位置。",
+  scene:{ vb:"0 0 640 260", aria:"吹管發射模擬：吹管長度與直徑、發射物大小都會反映在圖上，發射物在管內加速後飛出。",
+    MUZZLE:180, PXCM:1.6, CY:157, GY:230,
     html:p=>'<rect width="640" height="230" fill="#f1f5f9"/><rect y="230" width="640" height="30" fill="#d6bb8f"/>'+
       '<g class="ruler" fill="#78350f" font-size="11" text-anchor="middle"></g>'+
-      '<rect class="tube" x="20" y="150" width="120" height="14" rx="7" fill="#92400e"/>'+
+      '<rect class="tube" x="52" y="150" width="128" height="14" rx="7" fill="#92400e"/>'+
+      '<rect class="air" x="54" y="152" width="0" height="10" rx="4" fill="#fda4a4" opacity="0.9"/>'+
       '<line class="tgt" y1="150" y2="230" stroke="#dc2626" stroke-width="3" stroke-dasharray="4 3"/>'+
       '<text class="tgtT" y="145" fill="#dc2626" font-size="12" text-anchor="middle">目標</text>'+
       '<path class="trail" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5 4"/>'+
-      '<circle class="ball" cx="30" cy="157" r="7" fill="#38bdf8" stroke="#0369a1" stroke-width="1.5"/>',
-    build(svg){ const rl=$(".ruler",svg); let t=""; for(let m=0;m<=8;m+=1){ t+='<text x="'+(40+m/8*580)+'" y="252">'+m+'m</text>'; } rl.innerHTML=t;
-      return {trail:$(".trail",svg),ball:$(".ball",svg),tube:$(".tube",svg),tgt:$(".tgt",svg),tgtT:$(".tgtT",svg)}; },
-    mapX(m){ return 40+m/8*580; },
-    preview(svg,refs,s){ const tx=this.mapX(s.target); refs.tgt.setAttribute("x1",tx); refs.tgt.setAttribute("x2",tx); refs.tgtT.setAttribute("x",tx);
-      refs.trail.setAttribute("d",""); refs.ball.setAttribute("cx",30); refs.ball.setAttribute("cy",157); refs.ball.setAttribute("r",4+s.projSize/6); },
-    run(svg,refs,s,res,done){ const self=this; const endX=this.mapX(res.dist);
-      const d="M40 157 "+[...Array(21)].map((_,i)=>{const f=i/20;return "L"+(40+(endX-40)*f).toFixed(1)+" "+(157+(65)*f*f).toFixed(1);}).join(" ");
-      refs.ball.setAttribute("r",4+s.projSize/6);
-      animate(700, t=>{ refs.trail.setAttribute("d",d); const f=t; const x=40+(endX-40)*f, y=157+65*f*f;
-        refs.ball.setAttribute("cx",x); refs.ball.setAttribute("cy",y); }, done); }
+      '<circle class="ball" cx="70" cy="157" r="7" fill="#38bdf8" stroke="#0369a1" stroke-width="1.5"/>',
+    build(svg){ const rl=$(".ruler",svg); let t=""; for(let m=0;m<=8;m+=1){ t+='<text x="'+(this.MUZZLE+m/8*440)+'" y="252">'+m+'m</text>'; } rl.innerHTML=t;
+      return {trail:$(".trail",svg),ball:$(".ball",svg),tube:$(".tube",svg),air:$(".air",svg),tgt:$(".tgt",svg),tgtT:$(".tgtT",svg)}; },
+    mapX(m){ return this.MUZZLE+Math.min(m,8)/8*440; },
+    // 依變因重繪管子與發射物，回傳管內起點座標
+    layout(refs,s){ const lenPx=s.tubeLen*this.PXCM, x0=this.MUZZLE-lenPx, th=clamp(7+s.tubeDia*0.6,9,20), r=3+s.projSize/6;
+      refs.tube.setAttribute("x",x0); refs.tube.setAttribute("width",lenPx); refs.tube.setAttribute("height",th); refs.tube.setAttribute("y",this.CY-th/2);
+      refs.air.setAttribute("x",x0+2); refs.air.setAttribute("y",this.CY-th/2+2); refs.air.setAttribute("height",Math.max(4,th-4)); refs.air.setAttribute("width",0);
+      refs.ball.setAttribute("r",r); refs.ball.setAttribute("cy",this.CY);
+      return {x0:x0, start:x0+r+4, r:r}; },
+    setTarget(refs,s){ const tx=this.mapX(s.target); refs.tgt.setAttribute("x1",tx); refs.tgt.setAttribute("x2",tx); refs.tgtT.setAttribute("x",tx); },
+    preview(svg,refs,s){ const L=this.layout(refs,s); this.setTarget(refs,s);
+      refs.trail.setAttribute("d",""); refs.ball.setAttribute("cx",L.start); },
+    run(svg,refs,s,res,done){ const self=this, L=this.layout(refs,s); this.setTarget(refs,s);
+      const startX=L.start, muzzle=this.MUZZLE, lenPx=s.tubeLen*this.PXCM, endX=this.mapX(res.dist);
+      refs.trail.setAttribute("d","");
+      // 階段1：管內加速，位置與 t² 成正比（等加速度）；管越長加速距離越長，對應 v=√(2aL)
+      animate(300+s.tubeLen*7, t=>{ const f=t*t, x=startX+(muzzle-startX)*f;
+        refs.ball.setAttribute("cx",x); refs.ball.setAttribute("cy",self.CY);
+        refs.air.setAttribute("width",clamp(x-(muzzle-lenPx)-6,0,lenPx-4)); },
+      ()=>{ // 階段2：出管拋物線飛行
+        const d="M"+muzzle+" "+self.CY+" "+[...Array(21)].map((_,i)=>{const f=i/20;return "L"+(muzzle+(endX-muzzle)*f).toFixed(1)+" "+(self.CY+(self.GY-8-self.CY)*f*f).toFixed(1);}).join(" ");
+        animate(650, t=>{ refs.trail.setAttribute("d",d); const x=muzzle+(endX-muzzle)*t, y=self.CY+(self.GY-8-self.CY)*t*t;
+          refs.ball.setAttribute("cx",x); refs.ball.setAttribute("cy",y); }, done); }); }
   },
   adv:"<p>吹氣時，發射物<strong>後方</strong>空氣壓力升高，前方是大氣壓，這個<strong>壓力差</strong>像活塞一樣把它推出。管子越長，加速距離越長，出口速度越快（近似 v=√(2aL)）。但發射物越大、越輕，空氣<strong>阻力</strong>的影響也越明顯，未必飛更遠。真實中還受發射物與管壁摩擦、漏氣與一口氣長短限制。</p>",
   think:"<ul><li>力量相同，20 cm 和 80 cm 管的出口速度差多少？</li><li>同樣一顆棉球，發射物「越大」為什麼不一定飛越遠？</li></ul>"
