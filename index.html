@@ -339,14 +339,19 @@ dialog::backdrop { background: rgba(10,20,40,.55); }
         <button class="btn btn-ghost" id="cup-reset">↺ 拿出來</button>
       </div>
       <div class="stage">
-        <svg viewBox="0 0 360 190" role="img" aria-label="倒扣杯子壓入水中示意圖：杯中空氣擋住水，杯底的紙保持乾燥。">
-          <rect x="0" y="95" width="360" height="95" fill="#bae6fd"/>
+        <svg viewBox="0 0 360 200" role="img" aria-label="倒扣杯子壓入水中示意圖：杯口朝下沒有封住，壓到底時水從杯口進入一些，但杯中關住的空氣擋住水，杯底的衛生紙保持乾燥。">
+          <rect x="0" y="95" width="360" height="105" fill="#bae6fd"/>
           <line x1="0" y1="95" x2="360" y2="95" stroke="#38bdf8" stroke-width="2"/>
+          <text x="20" y="112" font-size="11" fill="#0369a1">水面</text>
+          <!-- 倒扣的杯子：杯底(封)在上、杯口(開)朝下 -->
           <g id="cup-g" transform="translate(180,10)">
-            <rect x="-34" y="0" width="68" height="86" fill="#e0f2fe" opacity="0.5" stroke="#0369a1" stroke-width="3"/>
-            <rect x="-30" y="4" width="60" height="16" fill="#fde68a" stroke="#b45309" stroke-width="1.5"/>
-            <text x="0" y="16" font-size="10" text-anchor="middle" fill="#78350f">紙</text>
-            <g id="cup-air"><text x="0" y="60" font-size="12" text-anchor="middle" fill="#0369a1">空氣</text></g>
+            <polygon points="-28,0 28,0 34,86 -34,86" fill="#e0f2fe" fill-opacity="0.45"/>
+            <polygon id="cup-water" points="" fill="#38bdf8" opacity="0.8"/>
+            <!-- 杯壁：左壁→杯底→右壁，杯口(底部)不畫線＝開口 -->
+            <path d="M-34 86 L-28 0 L28 0 L34 86" fill="none" stroke="#0369a1" stroke-width="3" stroke-linejoin="round"/>
+            <rect id="cup-paper" x="-22" y="4" width="44" height="12" rx="2" fill="#fde68a" stroke="#b45309" stroke-width="1.5"/>
+            <text x="0" y="13.5" font-size="8.5" text-anchor="middle" fill="#78350f">衛生紙</text>
+            <text id="cup-airlabel" x="0" y="52" font-size="11" text-anchor="middle" fill="#0369a1">空氣</text>
           </g>
         </svg>
       </div>
@@ -710,14 +715,29 @@ const AirDemo = {
       });
     }
     push.oninput=draw; draw(); place(); requestAnimationFrame(loop);
-    // 倒扣杯子
-    const cupG=$("#cup-g");
+    // 倒扣杯子：杯口朝下、開口不封；壓到底時水從杯口進入一點，但被關住的空氣擋住、升不到衛生紙
+    const cupG=$("#cup-g"), cupWater=$("#cup-water"), cupAir=$("#cup-airlabel");
+    const CUP_TOP=10, CUP_DEEP=100, MOUTH=86, WATER_TOP_END=48; // 杯內水最高只到 y48，衛生紙在 y4~16 保持乾燥
+    const halfAt=(y)=> 28+6*(y/MOUTH);              // 杯壁在深度 y 的半寬（梯形）
+    function setCupWater(topY){                     // 杯內水從杯口(86)往上到 topY
+      if(topY>=MOUTH){ cupWater.setAttribute("points",""); return; }
+      const pts=[[-halfAt(MOUTH)+2,MOUTH],[halfAt(MOUTH)-2,MOUTH],[halfAt(topY)-2,topY],[-halfAt(topY)+2,topY]];
+      cupWater.setAttribute("points", pts.map(a=>a[0].toFixed(1)+","+a[1].toFixed(1)).join(" "));
+    }
+    function resetCup(){ cupG.setAttribute("transform","translate(180,"+CUP_TOP+")"); setCupWater(MOUTH); cupAir.setAttribute("y",52); }
     $("#cup-push").onclick=()=>{
       Nav.markDone(1); Settings.beep(500);
-      animate(900, t=>{ cupG.setAttribute("transform","translate(180,"+(10+t*70)+")"); },
-        ()=>{ $("#cup-readout").textContent="杯子壓進水裡，但杯中空氣擋住水，水只升高一點點，杯底的紙還是乾的！空氣佔住了杯子裡的空間。"; });
+      animate(1200, t=>{
+        const ty=CUP_TOP+(CUP_DEEP-CUP_TOP)*t;
+        cupG.setAttribute("transform","translate(180,"+ty.toFixed(1)+")");
+        const mouthSvgY=ty+MOUTH;                   // 杯口在畫面上的位置
+        const sub=clamp((mouthSvgY-95)/((CUP_DEEP+MOUTH)-95),0,1); // 杯口沒入水面後才進水
+        setCupWater(MOUTH-(MOUTH-WATER_TOP_END)*sub);
+        cupAir.setAttribute("y", (30+ (WATER_TOP_END-30)/2 ).toFixed(0));
+      }, ()=>{ $("#cup-readout").textContent="杯子壓到底了！水從杯口進入一些，但杯裡還關著一團空氣，把水擋住、升不上去，杯底的衛生紙保持乾燥 —— 空氣佔住了杯子裡的空間。"; });
     };
-    $("#cup-reset").onclick=()=>{ stopAnims(); cupG.setAttribute("transform","translate(180,10)"); $("#cup-readout").textContent="按「壓入水中」看看杯子裡發生什麼事。"; };
+    $("#cup-reset").onclick=()=>{ stopAnims(); resetCup(); $("#cup-readout").textContent="按「壓入水中」看看杯子裡發生什麼事。"; };
+    resetCup();
   }
 };
 </script>
@@ -992,27 +1012,51 @@ const EXPERIMENTS = {
     return {dist, metrics:{dist:rnd2(dist),vtop:rnd2(vtop),reach:Math.round(dist/s.lineLen*100)},
       readout:"氣球前進 <b>"+rnd2(dist)+" m</b>（繩長 "+s.lineLen+" m 的 "+Math.round(dist/s.lineLen*100)+"%），最高速 "+rnd2(vtop)+" m/s。空氣向後噴 → 氣球被向前推（作用力與反作用力）。"};
   },
-  scene:{ vb:"0 0 640 220", aria:"氣球火箭沿棉線前進的模擬，含作用力、反作用力、摩擦力與重力箭頭。",
+  scene:{ vb:"0 0 640 220", aria:"氣球火箭沿棉線前進的模擬：氣球大小、載重與繩長會反映在圖上，含作用力、反作用力箭頭。",
+    X0:40, SPAN:570, Y:96,
     html:p=>'<rect width="640" height="220" fill="#fffbeb"/>'+
-      '<line class="line" x1="30" y1="90" x2="610" y2="90" stroke="#94a3b8" stroke-width="2"/>'+
+      '<line class="line" x1="40" y1="96" x2="610" y2="96" stroke="#94a3b8" stroke-width="2"/>'+
+      '<line class="post0" x1="40" y1="80" x2="40" y2="112" stroke="#78350f" stroke-width="3"/>'+
+      '<line class="post1" x1="610" y1="80" x2="610" y2="112" stroke="#78350f" stroke-width="3"/>'+
       '<g class="ruler" fill="#92400e" font-size="11" text-anchor="middle"></g>'+
-      '<g class="rocket" transform="translate(40,90)">'+
-        '<rect x="-24" y="-8" width="48" height="10" rx="5" fill="#67e8f9" stroke="#0891b2" stroke-width="1.5"/>'+
-        '<ellipse class="bal" cx="0" cy="20" rx="16" ry="11" fill="#e11d48" stroke="#be123c" stroke-width="1.5"/>'+
-        '<g class="jet" opacity="0"><circle cx="-30" cy="20" r="4" fill="#7dd3fc"/><circle cx="-42" cy="16" r="3" fill="#bae6fd"/></g>'+
-        arr(p,"air",-24,20,-70,20,4)+'<text x="-70" y="8" fill="#0ea5e9" font-size="10" text-anchor="middle">噴氣(作用力)</text>'+
-        arr(p,"red",24,20,66,20,4)+'<text x="52" y="8" fill="#dc2626" font-size="10" text-anchor="middle">推力(反作用力)</text>'+
+      '<g class="rocket" transform="translate(40,96)">'+
+        '<rect x="-26" y="-9" width="52" height="9" rx="4" fill="#67e8f9" stroke="#0891b2" stroke-width="1.5"/>'+  /* 吸管 */
+        '<ellipse class="bal" cx="2" cy="16" rx="16" ry="11" fill="#e11d48" stroke="#be123c" stroke-width="1.5"/>'+
+        '<path class="knot" d="" fill="#be123c"/>'+
+        '<g class="cargo"><rect class="cargobox" x="-8" y="4" width="16" height="12" rx="2" fill="#a16207" stroke="#78350f" stroke-width="1.5"/><line class="cargoline" x1="0" y1="0" x2="0" y2="4" stroke="#78350f" stroke-width="1.2"/><text class="cargot" x="0" y="13" font-size="7" text-anchor="middle" fill="#fff">載重</text></g>'+
+        '<g class="jet" opacity="0"><circle cx="-32" cy="16" r="4" fill="#7dd3fc"/><circle cx="-44" cy="12" r="3" fill="#bae6fd"/></g>'+
+        arr(p,"air",-26,16,-72,16,4)+'<text x="-72" y="4" fill="#0ea5e9" font-size="10" text-anchor="middle">噴氣(作用力)</text>'+
+        arr(p,"red",26,16,68,16,4)+'<text x="54" y="4" fill="#dc2626" font-size="10" text-anchor="middle">推力(反作用力)</text>'+
       '</g>',
-    build(svg){ const rl=$(".ruler",svg); let t=""; for(let m=0;m<=8;m+=2){ t+='<text x="'+(40+m/8*570)+'" y="205">'+m+'m</text>'; } rl.innerHTML=t;
-      return {rocket:$(".rocket",svg),bal:$(".bal",svg),jet:$(".jet",svg),line:$(".line",svg)}; },
-    mapX(m){ return 40+m/8*570; }, yAt(s){ return 90 - Math.sin((s.lineAngle||0)*Math.PI/180)*70; },
-    preview(svg,refs,s){ const y2=this.yAt(s); refs.line.setAttribute("y2",y2);
-      refs.rocket.setAttribute("transform","translate(40,90)"); refs.bal.setAttribute("rx",8+s.air*1.4); refs.bal.setAttribute("ry",6+s.air*0.9); refs.jet.setAttribute("opacity","0"); },
-    run(svg,refs,s,res,done){ const endX=this.mapX(res.dist), endY=90-(this.mapX(res.dist)-40)/(570)*8*Math.sin((s.lineAngle||0)*Math.PI/180)*0;
-      const y2=this.yAt(s), slope=(y2-90)/(610-30);
-      refs.jet.setAttribute("opacity","1"); refs.bal.setAttribute("rx",8+s.air*1.4); refs.bal.setAttribute("ry",6+s.air*0.9);
-      animate(700+res.metrics.dist*120, t=>{ const e=1-Math.pow(1-t,2.2); const x=40+(endX-40)*e; const y=90+slope*(x-30);
-        refs.rocket.setAttribute("transform","translate("+x+","+y+")"); refs.bal.setAttribute("rx",(8+s.air*1.4)*(1-t*0.7)); refs.bal.setAttribute("ry",(6+s.air*0.9)*(1-t*0.7));
+    build(svg){ const rl=$(".ruler",svg); let t=""; for(let m=0;m<=10;m+=2){ t+='<text x="'+(this.X0+m/10*this.SPAN)+'" y="210">'+m+'m</text>'; } rl.innerHTML=t;
+      return {rocket:$(".rocket",svg),bal:$(".bal",svg),knot:$(".knot",svg),cargo:$(".cargo",svg),cargobox:$(".cargobox",svg),cargoline:$(".cargoline",svg),jet:$(".jet",svg),line:$(".line",svg),post1:$(".post1",svg)}; },
+    mapX(m){ return this.X0+Math.min(m,10)/10*this.SPAN; },
+    endY(s){ return this.Y - Math.sin((s.lineAngle||0)*Math.PI/180)*60; },
+    sizeF(s){ return {s:0.78,m:1.05,l:1.32}[s.size]||1; },
+    // 依變因畫氣球、載重、繩子；回傳
+    layout(refs,s){ const f=this.sizeF(s), rx=(6+s.air*1.25)*f, ry=(5+s.air*0.85)*f;
+      refs.bal.setAttribute("rx",rx.toFixed(1)); refs.bal.setAttribute("ry",ry.toFixed(1)); refs.bal.setAttribute("cx",2);
+      refs.knot.setAttribute("d","M"+(2-rx)+" 16 q-9 0 -13 7 l6 -2 l-2 7 q7 -4 9 -12 z"); // 氣球開口(打結)朝後
+      // 載重：越重箱子越大，0 則隱藏
+      if(s.payload<=0){ refs.cargo.setAttribute("opacity","0"); }
+      else { refs.cargo.setAttribute("opacity","1"); const w=8+s.payload*0.75, h=6+s.payload*0.45, cy=ry+14;
+        refs.cargobox.setAttribute("width",w); refs.cargobox.setAttribute("x",-w/2); refs.cargobox.setAttribute("height",h); refs.cargobox.setAttribute("y",cy);
+        refs.cargoline.setAttribute("y1",2); refs.cargoline.setAttribute("y2",cy); refs.cargo.querySelector(".cargot").setAttribute("y",cy+h*0.7); }
+      // 繩子長度與傾斜
+      const ex=this.mapX(s.lineLen), ey=this.endY(s);
+      refs.line.setAttribute("x2",ex); refs.line.setAttribute("y2",ey);
+      refs.post1.setAttribute("x1",ex); refs.post1.setAttribute("x2",ex); refs.post1.setAttribute("y1",ey-16); refs.post1.setAttribute("y2",ey+16);
+      return {rx,ry,ex,ey}; },
+    preview(svg,refs,s){ this.layout(refs,s); refs.rocket.setAttribute("transform","translate("+this.X0+","+this.Y+")"); refs.jet.setAttribute("opacity","0"); },
+    run(svg,refs,s,res,done){ const self=this, L=this.layout(refs,s);
+      const frac=clamp(res.metrics.dist/s.lineLen,0,1);
+      const tx=self.X0+(L.ex-self.X0)*frac, ty=self.Y+(L.ey-self.Y)*frac;
+      refs.jet.setAttribute("opacity","1");
+      const rx0=L.rx, ry0=L.ry;
+      animate(700+res.metrics.dist*120, t=>{ const e=1-Math.pow(1-t,2.2);
+        refs.rocket.setAttribute("transform","translate("+(self.X0+(tx-self.X0)*e)+","+(self.Y+(ty-self.Y)*e)+")");
+        const k=1-t*0.7; refs.bal.setAttribute("rx",(rx0*k).toFixed(1)); refs.bal.setAttribute("ry",(ry0*k).toFixed(1));
+        refs.knot.setAttribute("d","M"+(2-rx0*k)+" 16 q-9 0 -13 7 l6 -2 l-2 7 q7 -4 9 -12 z");
         if(t>0.85) refs.jet.setAttribute("opacity",String(Math.max(0,(1-t)/0.15))); },
         ()=>{ refs.jet.setAttribute("opacity","0"); done(); }); }
   },
