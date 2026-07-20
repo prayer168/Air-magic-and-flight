@@ -588,6 +588,14 @@ body.no-anim .hero .ring { transform: translate(300px,200px); }
 body.no-anim .hero .chute { transform: translate(240px,150px); }
 body.no-anim .hero .rotor { transform: translate(730px,150px); }
 kbd { background: var(--chip); border-radius: 4px; padding: 1px 6px; font-size: .85em; }
+/* 氣流線：讓「風」看起來在流動 */
+.flowline { stroke-dasharray: 26 10; animation: flowdash 1.1s linear infinite; }
+@keyframes flowdash { to { stroke-dashoffset: -36; } }
+.flowline.sep { stroke-dasharray: 6 5; animation: flowdash2 .55s linear infinite; }
+@keyframes flowdash2 { to { stroke-dashoffset: -22; } }
+body.no-anim .flowline { animation: none; stroke-dasharray: none; }
+.legend { font-size: .84rem; color: var(--muted); margin: 6px 0 0; }
+.legend b { color: var(--ink); }
 </style>
 
 <script>
@@ -847,6 +855,7 @@ const Engine = {
           '<div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-go" data-launch>'+cfg.launchLabel+'</button>'+
           '<button class="btn btn-ghost" data-reset>↺ 重設</button></div></div>'+
         '<div class="card"><h3>🔭 模擬觀察</h3><div class="stage"><svg viewBox="'+cfg.scene.vb+'" role="img" aria-label="'+cfg.scene.aria+'">'+arrowDefs(pfx)+cfg.scene.html(pfx)+'</svg></div>'+
+          (cfg.legend?'<p class="legend">'+cfg.legend+'</p>':'')+
           '<div class="metrics">'+metricHtml+'</div>'+
           '<p class="exp-readout" data-readout aria-live="polite">先預測，再按「'+cfg.launchLabel+'」。</p>'+
           '<p class="sim-note">⚠️ 以上為模擬結果（簡化模型），真實結果會因材料、製作精度與環境而不同。</p></div>'+
@@ -1096,10 +1105,10 @@ const EXPERIMENTS = {
         '<rect x="-26" y="-9" width="52" height="9" rx="4" fill="#67e8f9" stroke="#0891b2" stroke-width="1.5"/>'+  /* 吸管 */
         '<ellipse class="bal" cx="2" cy="16" rx="16" ry="11" fill="#e11d48" stroke="#be123c" stroke-width="1.5"/>'+
         '<path class="knot" d="" fill="#be123c"/>'+
-        '<g class="cargo"><rect class="cargobox" x="-8" y="4" width="16" height="12" rx="2" fill="#a16207" stroke="#78350f" stroke-width="1.5"/><line class="cargoline" x1="0" y1="0" x2="0" y2="4" stroke="#78350f" stroke-width="1.2"/><text class="cargot" x="0" y="13" font-size="7" text-anchor="middle" fill="#fff">載重</text></g>'+
+        '<g class="cargo"><rect class="cargobox" x="-8" y="4" width="16" height="12" rx="2" fill="#a16207" stroke="#78350f" stroke-width="1.5"/><line class="cargoline" x1="0" y1="0" x2="0" y2="4" stroke="#78350f" stroke-width="1.2"/></g>'+
         '<g class="jet" opacity="0"><circle cx="-32" cy="16" r="4" fill="#7dd3fc"/><circle cx="-44" cy="12" r="3" fill="#bae6fd"/></g>'+
-        arr(p,"air",-26,16,-72,16,4)+'<text x="-72" y="4" fill="#0ea5e9" font-size="10" text-anchor="middle">噴氣(作用力)</text>'+
-        arr(p,"red",26,16,68,16,4)+'<text x="54" y="4" fill="#dc2626" font-size="10" text-anchor="middle">推力(反作用力)</text>'+
+        arr(p,"air",-26,16,-72,16,4)+
+        arr(p,"red",26,16,68,16,4)+
       '</g>',
     build(svg){ const rl=$(".ruler",svg); let t=""; for(let m=0;m<=10;m+=2){ t+='<text x="'+(this.X0+m/10*this.SPAN)+'" y="210">'+m+'m</text>'; } rl.innerHTML=t;
       return {rocket:$(".rocket",svg),bal:$(".bal",svg),knot:$(".knot",svg),cargo:$(".cargo",svg),cargobox:$(".cargobox",svg),cargoline:$(".cargoline",svg),jet:$(".jet",svg),line:$(".line",svg),post1:$(".post1",svg)}; },
@@ -1114,7 +1123,7 @@ const EXPERIMENTS = {
       if(s.payload<=0){ refs.cargo.setAttribute("opacity","0"); }
       else { refs.cargo.setAttribute("opacity","1"); const w=8+s.payload*0.75, h=6+s.payload*0.45, cy=ry+14;
         refs.cargobox.setAttribute("width",w); refs.cargobox.setAttribute("x",-w/2); refs.cargobox.setAttribute("height",h); refs.cargobox.setAttribute("y",cy);
-        refs.cargoline.setAttribute("y1",2); refs.cargoline.setAttribute("y2",cy); refs.cargo.querySelector(".cargot").setAttribute("y",cy+h*0.7); }
+        refs.cargoline.setAttribute("y1",2); refs.cargoline.setAttribute("y2",cy); }
       // 繩子長度與傾斜
       const ex=this.mapX(s.lineLen), ey=this.endY(s);
       refs.line.setAttribute("x2",ex); refs.line.setAttribute("y2",ey);
@@ -1133,6 +1142,7 @@ const EXPERIMENTS = {
         if(t>0.85) refs.jet.setAttribute("opacity",String(Math.max(0,(1-t)/0.15))); },
         ()=>{ refs.jet.setAttribute("opacity","0"); done(); }); }
   },
+  legend:"圖例：<b style='color:#0ea5e9'>藍箭頭＝空氣向後噴（作用力）</b>　<b style='color:#dc2626'>紅箭頭＝氣球被向前推（反作用力）</b>；棕色方塊＝火箭載重（越重方塊越大）。",
   adv:"<p>這是<strong>牛頓第三運動定律</strong>：氣球把空氣<strong>向後</strong>噴（作用力），空氣同時把氣球<strong>向前</strong>推（反作用力），兩力大小相等、方向相反、作用在不同物體上。空氣越多、噴氣時間越長，推力作用越久，衝得越遠；<strong>摩擦力</strong>與<strong>載重（重力）</strong>則會抵消一部分。真正的火箭正是靠向後噴出高速氣體前進，在太空中也能推進。</p>",
   think:"<ul><li>氣球往前衝時，空氣往哪個方向噴？</li><li>載重加到 20 g，距離少了多少？</li><li>為什麼火箭在沒有空氣的太空也能飛？</li></ul>"
 },
@@ -1244,13 +1254,12 @@ const EXPERIMENTS = {
       '<text class="alt" x="388" y="24" font-size="13" fill="#1e40af" text-anchor="end" font-weight="bold"></text>'+
       '<g class="chute" transform="translate(200,120)">'+
         '<path class="canopy" d="" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>'+
-        '<text class="mat" x="0" y="-30" font-size="9" text-anchor="middle" fill="#7c2d12"></text>'+
         '<g class="lines" stroke="#7c5313" stroke-width="1"></g>'+
         '<rect class="load" x="-8" y="40" width="16" height="12" rx="2" fill="#78350f"/>'+
-        arr(p,"weight",0,58,0,90,4)+'<text x="7" y="84" font-size="10" fill="#c2410c">重力</text>'+
-        arr(p,"air",0,-2,0,-30,4)+'<text x="7" y="-22" font-size="10" fill="#0ea5e9">阻力</text>'+
+        arr(p,"weight",0,58,0,90,4)+
+        arr(p,"air",0,-2,0,-30,4)+
       '</g>',
-    build(svg){ return {chute:$(".chute",svg),canopy:$(".canopy",svg),mat:$(".mat",svg),lines:$(".lines",svg),load:$(".load",svg),scale:$(".scale",svg),alt:$(".alt",svg),wind:$(".wind",svg)}; },
+    build(svg){ return {chute:$(".chute",svg),canopy:$(".canopy",svg),lines:$(".lines",svg),load:$(".load",svg),scale:$(".scale",svg),alt:$(".alt",svg),wind:$(".wind",svg)}; },
     altToY(a){ return this.GROUND-(clamp(a,0,this.MAXH)/this.MAXH)*(this.GROUND-this.TOP); },
     lineLenPx(s){ return clamp(s.lineLen*1.0+8,14,42); },
     drawScale(refs){ let h=""; for(let a=0;a<=this.MAXH;a+=2){ const y=this.altToY(a); h+='<text x="34" y="'+(y+3)+'">'+a+'</text><line x1="35" y1="'+y+'" x2="41" y2="'+y+'" stroke="#94a3b8"/>'; }
@@ -1261,7 +1270,6 @@ const EXPERIMENTS = {
     matInfo(m){ return {bag:["#f59e0b","#b45309","塑膠袋"],cloth:["#8b5cf6","#6d28d9","布"],paper:["#fcd34d","#ca8a04","紙"]}[m]; },
     layout(refs,s){ const r=clamp(s.canopy*0.5,6,22), mc=this.matInfo(s.material), attach=s.shape==="square"?11:0;
       refs.canopy.setAttribute("d",this.canopyPath(s.shape,r)); refs.canopy.setAttribute("fill",mc[0]); refs.canopy.setAttribute("stroke",mc[1]);
-      refs.mat.textContent=mc[2]+"‧"+(s.shape==="round"?"圓":s.shape==="square"?"方":"十字")+"形"; refs.mat.setAttribute("y",-r-6);
       const ll=this.lineLenPx(s); let lh="";
       [-r*0.8,-r*0.3,r*0.3,r*0.8].forEach(px=>{ lh+='<line x1="'+px.toFixed(1)+'" y1="'+attach+'" x2="0" y2="'+ll.toFixed(1)+'"/>'; });
       refs.lines.innerHTML=lh;
@@ -1276,6 +1284,7 @@ const EXPERIMENTS = {
         const x=clamp(self.X0+drift*20*t+Math.sin(t*10)*wob*7,64,380); self.place(refs,s,a,x); },
         ()=>{ refs.alt.textContent="落地！0 m"; done(); }); }
   },
+  legend:"圖例：<b style='color:#c2410c'>橘箭頭＝重力（向下）</b>　<b style='color:#0ea5e9'>藍箭頭＝空氣阻力（向上）</b>；傘面顏色代表材質：<b style='color:#b45309'>橘＝塑膠袋</b>、<b style='color:#6d28d9'>紫＝布</b>、<b style='color:#ca8a04'>黃＝紙</b>；左側是高度表，右上顯示即時高度。",
   adv:"<p>降落傘落下時受<strong>重力</strong>（向下）和<strong>空氣阻力</strong>（向上）。傘面越大、越不透氣，阻力越大、下降越慢；但當阻力和重力<strong>達到平衡</strong>，速度就固定在<strong>終端速度</strong>，不會無限變慢。負載越重終端速度越大。<strong>十字形</strong>傘與較長的傘繩讓氣流較穩定，落地不易翻覆。</p>",
   think:"<ul><li>把傘面從 10 cm 加到 40 cm，下降速度是一直變慢還是接近某個值？</li><li>負載加重，下降速度怎麼變？</li><li>哪種形狀落地最穩？</li></ul>"
 },
@@ -1325,7 +1334,7 @@ const EXPERIMENTS = {
       let ch=""; for(let i=0;i<s.weight;i++){ ch+='<rect x="-3" y="'+(26+i*5)+'" width="6" height="4" rx="1.5" fill="none" stroke="#64748b" stroke-width="1.4"/>'; }
       refs.clips.innerHTML=ch;
       this.drawScale(refs); refs.air.textContent=s.air==="up"?"氣流 微弱上升 ↑":"氣流 靜止";
-      if(s.air==="up"){ let u=""; for(let i=-1;i<=1;i++){ u+='<path d="M'+(this.X0+i*22)+' 296 q '+(i*8)+' -60 0 -120"/>'; } refs.updraft.innerHTML=u; refs.updraft.setAttribute("opacity","0.5"); }
+      if(s.air==="up"){ let u=""; for(let i=-1;i<=1;i++){ u+='<path class="flowline" d="M'+(this.X0+i*22)+' 296 q '+(i*8)+' -60 0 -120"/>'; } refs.updraft.innerHTML=u; refs.updraft.setAttribute("opacity","0.5"); }
       else refs.updraft.setAttribute("opacity","0"); },
     place(refs,s,a){ refs.rotor.setAttribute("transform","translate("+this.X0+","+this.altToY(a).toFixed(1)+")"); refs.alt.textContent="高度 "+a.toFixed(1)+" m"; },
     preview(svg,refs,s){ this.layout(refs,s); refs.blades.setAttribute("transform","rotate(0)"); refs.blades.setAttribute("transform-origin","0 0"); this.place(refs,s,s.dropH); },
@@ -1374,7 +1383,7 @@ const EXPERIMENTS = {
         '<text class="massT" font-size="9" text-anchor="middle" fill="#7f1d1d"></text>'+
       '</g>',
     build(svg,p){
-      const st=$(".stream",svg); let l=""; for(let i=-2;i<=2;i++){ l+='<path d="M'+(180+i*14)+' 300 q '+(i*10)+' -120 0 -250"/>'; } st.innerHTML=l;
+      const st=$(".stream",svg); let l=""; for(let i=-2;i<=2;i++){ l+='<path class="flowline" d="M'+(180+i*14)+' 300 q '+(i*10)+' -120 0 -250"/>'; } st.innerHTML=l;
       const refs={ballG:$(".ballG",svg),ballRot:$(".ballRot",svg),ball:$(".ball",svg),tex:$(".tex",svg),massT:$(".massT",svg),
         stream:$(".stream",svg),jetG:$(".jetG",svg),windT:$(".windT",svg),svg,state:null,result:null,baseX:180,baseY:160,spin:0,phase:0,dragging:false};
       let drag=false;
@@ -1648,30 +1657,28 @@ const EXPERIMENTS = {
         const y=64+i*30, above=y<CY, near=Math.abs(y-CY)<46;
         const bend=above? -(near?12:5) : (near?9:4);
         if(stall && above && near){  // 失速：上表面氣流分離、後方捲起紊流
-          f+='<path d="M20 '+y+' Q '+(xL-10)+' '+(y-4)+' '+(CX-6)+' '+(y-10)+' q 18 2 26 14 q -14 8 -24 -2 q 16 14 34 6" stroke-dasharray="5 4" opacity="0.95"/>';
+          f+='<path class="flowline sep" d="M20 '+y+' Q '+(xL-10)+' '+(y-4)+' '+(CX-6)+' '+(y-10)+' q 18 2 26 14 q -14 8 -24 -2 q 16 14 34 6" opacity="0.95"/>';
         } else {
-          f+='<path d="M20 '+y+' Q '+(xL+6)+' '+(y+bend*0.55)+' '+CX+' '+(y+bend)+' Q '+(xT+18)+' '+(y+bend+dw*0.5)+' 620 '+(y+bend+dw)+'"/>';
+          f+='<path class="flowline" d="M20 '+y+' Q '+(xL+6)+' '+(y+bend*0.55)+' '+CX+' '+(y+bend)+' Q '+(xT+18)+' '+(y+bend+dw*0.5)+' 620 '+(y+bend+dw)+'"/>';
         }
       }
       // 後緣尾流標示
-      f+='<path d="M'+(xT+4)+' '+(CY+2)+' Q '+(xT+60)+' '+(CY+dw*0.7)+' 618 '+(CY+dw)+'" stroke="#0ea5e9" stroke-width="2.5" stroke-dasharray="7 5" opacity="0.85"/>';
+      f+='<path class="flowline sep" d="M'+(xT+4)+' '+(CY+2)+' Q '+(xT+60)+' '+(CY+dw*0.7)+' 618 '+(CY+dw)+'" stroke="#0ea5e9" stroke-width="2.5" opacity="0.85"/>';
       refs.flows.innerHTML=f;
       refs.stallT.setAttribute("opacity",stall?"1":"0"); refs.stallT.textContent=stall?"⚠️ 失速！氣流從上表面分離，後方變成紊亂尾流":"";
       // 受力箭頭（縮小，不要太大）
       const ls=res? clamp(res.lift*22,10,58):26, ds=res?clamp(res.drag*22,7,34):14, ws=res?clamp(res.weightN*22,10,58):26;
       refs.arrows.innerHTML =
-        arr(p,"lift",CX,CY-10,CX,CY-10-ls,3.5)+ '<text x="'+(CX+7)+'" y="'+(CY-10-ls+4)+'" font-size="12" fill="#0a8a4a">升力</text>'+
-        arr(p,"weight",CX,CY+10,CX,CY+10+ws,3.5)+ '<text x="'+(CX+7)+'" y="'+(CY+10+ws)+'" font-size="12" fill="#c2410c">重力</text>'+
-        arr(p,"drag",CX+c*0.3,CY,CX+c*0.3+ds,CY,3.5)+ '<text x="'+(CX+c*0.3+ds+4)+'" y="'+(CY-6)+'" font-size="12" fill="#7c3aed">阻力</text>'+
-        arr(p,"thrust",xL-26,CY,xL-64,CY,3.5)+ '<text x="'+(xL-68)+'" y="'+(CY-9)+'" font-size="15" font-weight="bold" fill="#1d4ed8" text-anchor="end">推力／氣流</text>';
-      refs.lo.setAttribute("x",CX-10); refs.lo.setAttribute("y",CY-58); refs.lo.setAttribute("text-anchor","middle");
-      refs.lo.textContent= stall? "上方：氣流分離" : "上方：流速較快、壓力較低";
-      refs.hi.setAttribute("x",CX-10); refs.hi.setAttribute("y",CY+64); refs.hi.setAttribute("text-anchor","middle");
-      refs.hi.textContent="下方：壓力較高（氣流被往下偏轉 →）";
+        arr(p,"lift",CX,CY-10,CX,CY-10-ls,3.5)+
+        arr(p,"weight",CX,CY+10,CX,CY+10+ws,3.5)+
+        arr(p,"drag",CX+c*0.3,CY,CX+c*0.3+ds,CY,3.5)+
+        arr(p,"thrust",xL-26,CY,xL-64,CY,3.5);
+      refs.lo.textContent=""; refs.hi.textContent="";
     },
     preview(svg,refs,s){ this.render(refs,s,null); },
     run(svg,refs,s,res,done){ this.render(refs,s,res); animate(600,()=>{},done); }
   },
+  legend:"圖例：<b style='color:#0a8a4a'>綠＝升力</b>　<b style='color:#c2410c'>橘＝重力</b>　<b style='color:#7c3aed'>紫＝阻力</b>　<b style='color:#1d4ed8'>藍＝推力／來流</b>；流動的藍線是空氣，機翼<b>上方流速較快、壓力較低</b>，<b>下方壓力較高</b>，氣流通過後被<b>往下偏轉</b>（後緣的尾流）。迎角過大時上方氣流會分離＝失速。",
   adv:"<p>升力<strong>不能只用「上方路程較長、空氣走得比較快」來解釋</strong>（這是常見的錯誤理論）。真正的原因是機翼把流過的空氣<strong>向下偏轉</strong>，依牛頓第三定律空氣就給機翼向上的反作用力；同時機翼上方流速較快、壓力較低，下方壓力較高，<strong>壓力差</strong>也提供升力。迎角越大升力越大，但超過<strong>失速角</strong>後，氣流從上表面<strong>分離</strong>，升力會<strong>驟降</strong>。升力也隨風速平方與機翼面積增加。</p>",
   think:"<ul><li>迎角從 0° 慢慢加到 20°，升力怎麼變？什麼時候突然掉下來？</li><li>風速加倍，升力大約變幾倍？</li><li>平板和流線翼型，哪個較早失速？</li></ul>"
 }
