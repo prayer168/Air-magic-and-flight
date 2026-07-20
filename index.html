@@ -96,7 +96,7 @@ body.no-anim .chapter.is-active { animation: none; }
 .card h3 { margin-top: 0; color: var(--brand); }
 [data-theme="dark"] .card h3 { color: var(--sky); }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
-.grid3 { display: grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap: 12px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(250px,100%),1fr)); gap: 12px; }
 @media (max-width: 880px) { .grid2 { grid-template-columns: 1fr; } }
 
 .pn-row { display: flex; justify-content: space-between; gap: 10px; margin-top: 22px; }
@@ -120,7 +120,7 @@ body.no-anim .chapter.is-active { animation: none; }
 .hero svg { width: 100%; height: auto; display: block; }
 .hero-caption { position: absolute; inset: auto 0 0 0; text-align: center; padding: 8px; font-weight: 900; color: #0c3567; font-size: clamp(1rem,3vw,1.5rem); text-shadow: 0 1px 3px rgba(255,255,255,.6); }
 [data-theme="dark"] .hero-caption { color: #cfe6ff; text-shadow: none; }
-.qcards { display: grid; grid-template-columns: repeat(auto-fit,minmax(230px,1fr)); gap: 12px; margin: 14px 0; }
+.qcards { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(230px,100%),1fr)); gap: 12px; margin: 14px 0; }
 .qcard { background: var(--panel); border-left: 6px solid var(--amber); border-radius: 10px; box-shadow: var(--shadow); padding: 12px 14px; font-weight: 700; }
 .map-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 10px; }
 .map-item { display: flex; align-items: center; gap: 8px; background: var(--panel); border: 2px solid var(--line); border-radius: 10px; padding: 9px 11px; cursor: pointer; font-weight: 700; text-align: left; }
@@ -134,7 +134,7 @@ body.no-anim .chapter.is-active { animation: none; }
 .exp-q { background: color-mix(in srgb,var(--amber) 14%, var(--panel)); border-left: 6px solid var(--amber); border-radius: 10px; padding: 10px 14px; font-weight: 700; margin: 10px 0; }
 .predict-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 10px 0; }
 .predict-row select { border: 2px solid var(--line); border-radius: 8px; padding: 7px 10px; background: var(--panel); max-width: 100%; }
-.ctrl-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 10px 16px; margin: 12px 0; }
+.ctrl-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(240px,100%),1fr)); gap: 10px 16px; margin: 12px 0; }
 .ctrl { background: color-mix(in srgb,var(--chip) 40%, var(--panel)); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
 .ctrl-label { display: flex; justify-content: space-between; gap: 8px; font-weight: 700; font-size: .92rem; }
 .ctrl-label output { color: var(--brand); white-space: nowrap; }
@@ -170,7 +170,7 @@ details.think { background: color-mix(in srgb,var(--ok) 10%, var(--panel)); bord
 details.think summary { font-weight: 800; color: var(--ok); cursor: pointer; }
 
 /* ---------- 迷思卡 ---------- */
-.myth-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap: 12px; }
+.myth-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(250px,100%),1fr)); gap: 12px; }
 .myth-card { perspective: 900px; min-height: 210px; }
 .myth-inner { position: relative; width: 100%; height: 100%; min-height: 210px; transform-style: preserve-3d; transition: transform .55s; }
 body.no-anim .myth-inner { transition: none; }
@@ -185,7 +185,7 @@ body.no-anim .myth-inner { transition: none; }
 /* ---------- 評量 ---------- */
 .quiz-item { background: var(--panel); border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px 16px; margin: 12px 0; }
 .quiz-tag { display: inline-block; font-size: .74rem; background: var(--chip); color: var(--chip-ink); border-radius: 99px; padding: 1px 10px; font-weight: 800; margin-bottom: 6px; }
-.quiz-choices { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); margin-top: 8px; }
+.quiz-choices { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit,minmax(min(220px,100%),1fr)); margin-top: 8px; }
 .quiz-choice { text-align: left; background: color-mix(in srgb,var(--chip) 35%, var(--panel)); border: 2px solid var(--line); border-radius: 10px; padding: 9px 12px; cursor: pointer; }
 .quiz-choice:hover:not(:disabled) { border-color: var(--brand); }
 .quiz-choice.sel { border-color: var(--amber); background: color-mix(in srgb,var(--amber) 18%, var(--panel)); }
@@ -242,8 +242,8 @@ dialog::backdrop { background: rgba(10,20,40,.55); }
     </div>
     <div class="progress-wrap">
       <span>學習進度</span>
-      <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="16" aria-valuenow="0" aria-label="已完成章節數" id="progressbar"><div class="progress-fill" id="progress-fill"></div></div>
-      <span id="progress-text">0 / 16 章</span>
+      <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="17" aria-valuenow="0" aria-label="已完成章節數" id="progressbar"><div class="progress-fill" id="progress-fill"></div></div>
+      <span id="progress-text">0 / 17 章</span>
     </div>
   </div>
 </header>
@@ -376,7 +376,7 @@ dialog::backdrop { background: rgba(10,20,40,.55); }
 <section class="chapter" id="chap-6"  data-title="空氣砲實驗" data-exp="cannon"></section>
 <section class="chapter" id="chap-7"  data-title="降落傘挑戰" data-exp="parachute"></section>
 <section class="chapter" id="chap-8"  data-title="紙飛旋翼實驗" data-exp="rotor"></section>
-<section class="chapter" id="chap-9"  data-title="伯努利漂浮球" data-exp="bernoulli"></section>
+<section class="chapter" id="chap-9"  data-title="康達效應漂浮球" data-exp="bernoulli"></section>
 <section class="chapter" id="chap-10" data-title="飛行種子與仿生設計" data-exp="seed"></section>
 <section class="chapter" id="chap-11" data-title="風帆車競速" data-exp="sailcar"></section>
 <section class="chapter" id="chap-12" data-title="機翼升力實驗" data-exp="wing"></section>
@@ -403,7 +403,7 @@ dialog::backdrop { background: rgba(10,20,40,.55); }
     <div class="card"><h3>💨 空氣砲</h3><p>紙箱挖圓孔、後面蒙塑膠膜。拍膜把遠處紙杯或衛生紙吹動；可用線香煙霧看渦環（大人操作）。</p></div>
     <div class="card"><h3>🪂 降落傘</h3><p>塑膠袋剪不同大小傘面，綁相同重物（如小螺帽），從同一高度放下，碼錶計時。</p></div>
     <div class="card"><h3>🚁 紙旋翼</h3><p>剪 T 形紙條，上端剪開往反方向折成兩葉，下端夾迴紋針。放高處觀察旋轉下降。</p></div>
-    <div class="card"><h3>🎈 伯努利漂浮球</h3><p>吹風機朝上吹（冷風），輕輕放上保麗龍球或乒乓球，觀察球停在氣流中；試著把吹風機慢慢傾斜。</p></div>
+    <div class="card"><h3>🎈 康達效應漂浮球</h3><p>吹風機朝上吹（冷風），輕輕放上保麗龍球或乒乓球，觀察球停在氣流中並自己轉動；試著把吹風機慢慢傾斜，看球會不會跟著走。</p></div>
     <div class="card"><h3>🌰 飛行種子</h3><p>撿楓樹翅果或做紙旋翼種子，從高處放下，比較旋轉、滑翔、飄浮三種方式。</p></div>
   </div>
 </section>
@@ -462,12 +462,8 @@ dialog::backdrop { background: rgba(10,20,40,.55); }
 </section>
 
 <!-- ============ 16. 學習挑戰與成果摘要 ============ -->
-<section class="chapter" id="chap-16" data-title="學習挑戰與成果摘要" aria-label="學習挑戰與成果摘要">
-  <h2>🏆 學習挑戰與成果摘要</h2>
-  <div class="card">
-    <h3>📊 我的探索足跡</h3>
-    <div id="summary-box">載入中…</div>
-  </div>
+<section class="chapter" id="chap-16" data-title="學習挑戰" aria-label="學習挑戰">
+  <h2>🏆 學習挑戰</h2>
   <h3 style="margin-top:16px;">學習挑戰（15 題）</h3>
   <p>答題後會告訴你<strong>為什麼</strong>，不只對或錯。答對 11 題以上就能拿到「空氣飛行研究員」證書！</p>
   <p class="exp-readout" id="quiz-score" aria-live="polite">目前得分：0 / 15</p>
@@ -479,15 +475,73 @@ dialog::backdrop { background: rgba(10,20,40,.55); }
     <h3>🎖️ 空氣飛行研究員 證書</h3>
     <p id="cert-text"></p>
   </div>
+</section>
 
-  <h3 style="margin-top:16px;">📚 查核過的學習資源</h3>
+<!-- ============ 17. 自主學習資源 ============ -->
+<section class="chapter" id="chap-17" data-title="自主學習資源" aria-label="自主學習資源">
+  <h2>📚 自主學習資源</h2>
+  <p>想繼續探索空氣與飛行？下面是老師逐一開過、確認可用的國內外優質資源（查核日期 2026-07-19）。挑一個有興趣的深入研究，做成你自己的小專題！</p>
+
+  <div class="card">
+    <h3>🌀 關於這個網站</h3>
+    <p><strong>空氣魔法與飛行互動實驗室</strong>是一個免費、免登入、可直接在瀏覽器開啟的自然科互動教材，適合<strong>國小三年級到國中</strong>。</p>
+    <ul>
+      <li><strong>10 個互動模擬</strong>：紙飛機、安全吹管、氣球火箭、空氣砲、降落傘、紙飛旋翼、康達效應漂浮球、飛行種子、風帆車、機翼升力。</li>
+      <li><strong>完整探究流程</strong>：先預測 →（只改一個變因）操作 → 觀察動畫 → 記錄數據 → 做三次比較 → 寫結論；改太多變因會跳出「公平測試」提醒。</li>
+      <li><strong>分級學習</strong>：右上角可切換「基礎模式（國小）」與「進階模式（國中）」；還有深淺色、音效、動畫速度、減少動態與全鍵盤操作。</li>
+      <li><strong>探究紀錄表</strong>：數據自動變成長條圖／折線圖，可儲存、下載、列印，資料存在自己的裝置裡。</li>
+      <li><strong>迷思破解卡＋15 題挑戰</strong>：破解「機翼越大一定飛越遠」「升力只是上方空氣走比較快」等常見誤會。</li>
+    </ul>
+    <p class="sim-note">所有模擬皆為簡化模型的「模擬結果」，用來看趨勢與關係；真實結果會因材料、製作精度與環境而不同 —— 請務必動手做做看！<br>
+    網址：<a href="https://prayer168.github.io/Air-magic-and-flight/" target="_blank" rel="noopener">prayer168.github.io/Air-magic-and-flight</a>（黑熊老師自然科學數位教材）</p>
+  </div>
+
+  <h3>🌍 國際資源</h3>
   <ul class="res-list">
-    <li><a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/four-forces-on-an-airplane/" target="_blank" rel="noopener">NASA Glenn：飛機上的四種力</a><span class="res-meta">NASA Glenn Research Center｜查核 2026-07-19</span></li>
-    <li><a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/incorrect-lift-theory/" target="_blank" rel="noopener">NASA：常見的錯誤升力理論（別只用「等時通過」解釋升力）</a><span class="res-meta">NASA Glenn Research Center｜查核 2026-07-19</span></li>
-    <li><a href="https://case.ntu.edu.tw/3d%E6%9C%89%E8%B6%A3%E5%AF%A6%E9%A9%97%EF%BC%9A%E7%A9%BA%E6%B0%A3%E7%A0%B2/index.html" target="_blank" rel="noopener">臺大科學Online：3D 有趣實驗——空氣砲</a><span class="res-meta">臺灣大學科學教育發展中心｜查核 2026-07-19</span></li>
-    <li><a href="https://scitechvista.nat.gov.tw/Article/c000008/detail?ID=042f8aa7-3469-4946-a36e-64c4bee35818" target="_blank" rel="noopener">科技大觀園：空氣砲</a><span class="res-meta">國科會科技大觀園｜查核 2026-07-19</span></li>
-    <li><a href="https://www.junyiacademy.org/junyi-science/middle-school-physics-chemistry/s4zud-/v/AaCz4r5Olgk" target="_blank" rel="noopener">均一教育平台：牛頓第三運動定律</a><span class="res-meta">均一教育平台｜查核 2026-07-19</span></li>
+    <li><a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/" target="_blank" rel="noopener">NASA｜Beginner's Guide to Aeronautics（航空學入門指南）</a>
+      <span class="res-meta">美國 NASA Glenn Research Center｜英文｜國中以上（可搭配翻譯）｜查核 2026-07-19<br>飛行原理的權威入門網站，從四力、機翼到風洞都有互動教材與圖解。</span></li>
+    <li><a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/four-forces-on-an-airplane/" target="_blank" rel="noopener">NASA｜飛機上的四種力 Four Forces on an Airplane</a>
+      <span class="res-meta">NASA Glenn Research Center｜英文｜國小高年級以上｜查核 2026-07-19<br>升力、重力、推力、阻力的標準圖解，本教材紙飛機單元的依據。</span></li>
+    <li><a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/bernoulli-and-newton/" target="_blank" rel="noopener">NASA｜Bernoulli and Newton：升力的正確解釋</a>
+      <span class="res-meta">NASA Glenn Research Center｜英文｜國中｜查核 2026-07-19<br>明確指出「等時通過／上方路程較長」是錯誤理論，說明壓力差與動量改變其實是同一件事的兩種看法。</span></li>
+    <li><a href="https://www.nasa.gov/stem-content/four-forces-of-flight/" target="_blank" rel="noopener">NASA STEM｜Four Forces of Flight 課堂活動</a>
+      <span class="res-meta">NASA STEM Engagement｜英文｜國小中高年級｜查核 2026-07-19<br>用氣球、球、電風扇和碼錶做的飛行四力動手活動，可直接帶進教室。</span></li>
+    <li><a href="https://www.exploratorium.edu/snacks" target="_blank" rel="noopener">Exploratorium｜Science Snacks 科學小點心</a>
+      <span class="res-meta">美國舊金山探索館｜英文｜國小～國中｜查核 2026-07-19<br>上百個用生活材料就能做的小實驗，含多個空氣、氣流與飛行主題。</span></li>
+    <li><a href="https://phet.colorado.edu/zh_TW/" target="_blank" rel="noopener">PhET 互動模擬教學（中文版）</a>
+      <span class="res-meta">美國科羅拉多大學波德分校｜繁體中文介面｜國小～高中｜查核 2026-07-19<br>免費physics模擬，可找「壓力」「流體」「拋體運動」等主題延伸練習。</span></li>
+    <li><a href="https://airandspace.si.edu/" target="_blank" rel="noopener">Smithsonian National Air and Space Museum 國立航空太空博物館</a>
+      <span class="res-meta">美國史密森尼學會｜英文｜全年段｜查核 2026-07-19<br>飛行史、真實飛機與太空船的線上展覽與教育資源。</span></li>
   </ul>
+
+  <h3>🇹🇼 國內資源</h3>
+  <ul class="res-list">
+    <li><a href="https://case.ntu.edu.tw/3d%E6%9C%89%E8%B6%A3%E5%AF%A6%E9%A9%97%EF%BC%9A%E7%A9%BA%E6%B0%A3%E7%A0%B2/index.html" target="_blank" rel="noopener">臺大科學 Online｜3D 有趣實驗：空氣砲</a>
+      <span class="res-meta">國立臺灣大學科學教育發展中心｜中文｜國小中高年級｜查核 2026-07-19<br>空氣砲的原理與 3D 呈現，本教材空氣砲單元的參考來源之一。</span></li>
+    <li><a href="https://case.ntu.edu.tw/" target="_blank" rel="noopener">臺大科學教育發展中心 CASE 科學 Online</a>
+      <span class="res-meta">國立臺灣大學｜中文｜國中以上｜查核 2026-07-19<br>大量由大學師生撰寫的科普文章與影音，可搜尋「流體」「空氣」等關鍵字。</span></li>
+    <li><a href="https://scitechvista.nat.gov.tw/" target="_blank" rel="noopener">科技大觀園</a>
+      <span class="res-meta">國科會（NSTC）｜中文｜國小高年級以上｜查核 2026-07-19<br>國家級科普平台，含空氣砲、流體力學等主題文章與影片。</span></li>
+    <li><a href="https://twsf.ntsec.gov.tw/" target="_blank" rel="noopener">全國中小學科學展覽會 作品資料庫</a>
+      <span class="res-meta">國立臺灣科學教育館｜中文｜國小～國中｜查核 2026-07-19<br>可查閱歷屆科展作品全文，是做自己的空氣／飛行專題最好的範本庫。</span></li>
+    <li><a href="https://www.ntsec.gov.tw/" target="_blank" rel="noopener">國立臺灣科學教育館</a>
+      <span class="res-meta">教育部｜中文｜全年段｜查核 2026-07-19<br>展覽、科學營隊與線上學習資源。</span></li>
+    <li><a href="https://www.nmns.edu.tw/" target="_blank" rel="noopener">國立自然科學博物館</a>
+      <span class="res-meta">教育部｜中文｜全年段｜查核 2026-07-19<br>自然科學展示與數位典藏，可查植物種子傳播等主題。</span></li>
+    <li><a href="https://www.junyiacademy.org/junyi-science/middle-school-physics-chemistry/s4zud-/v/AaCz4r5Olgk" target="_blank" rel="noopener">均一教育平台｜牛頓第三運動定律（作用力與反作用力）</a>
+      <span class="res-meta">均一平台教育基金會｜中文影音｜國小高年級～國中｜查核 2026-07-19<br>氣球火箭原理的影片講解，看完可回第 5 章再玩一次。</span></li>
+    <li><a href="https://lis.org.tw/" target="_blank" rel="noopener">LIS 情境科學教材</a>
+      <span class="res-meta">LIS 情境科學教材（台灣非營利團隊）｜中文影音｜國小高年級～國中｜查核 2026-07-19<br>用科學史故事帶出概念的免費影片教材，適合培養科學思考。</span></li>
+    <li><a href="https://twsf.ntsec.gov.tw/activity/race-1/58/pdf/NPHSF2018-080108.pdf" target="_blank" rel="noopener">科展作品：空氣炮的密碼（第 58 屆國小組物理科，PDF）</a>
+      <span class="res-meta">國立臺灣科學教育館 科展資料庫｜中文｜國小高年級｜查核 2026-07-19<br>學生自己做的空氣砲研究，開口形狀與射程的實測數據，值得對照本教材的模擬。</span></li>
+  </ul>
+
+  <details class="think"><summary>🤔 自主學習任務</summary>
+  <ul>
+    <li>挑一個你最有興趣的單元，找上面 <strong>兩個以上</strong> 的資源交叉閱讀，把新學到的寫進探究紀錄表。</li>
+    <li>到科展資料庫找一篇跟空氣或飛行有關的作品，看看他們怎麼設計「公平測試」。</li>
+    <li>用真實材料重做一次模擬過的實驗，比較<strong>模擬結果</strong>和<strong>真實結果</strong>差多少，並想想為什麼。</li>
+  </ul></details>
 </section>
 </main>
 
@@ -655,14 +709,14 @@ const Nav = {
     if(!silent){ window.scrollTo({top:0,behavior:Settings.noAnim?"auto":"smooth"}); Settings.beep(560); }
     if(i===0) this.markDone(0);
     if(i===12) this.markDone(12); // 真實實驗指南：開啟即完成（索引12=第13章）
-    if(i===15) Summary.render();
+    if(i===16) this.markDone(16); // 自主學習資源：開啟即完成
     if(i===13) Record.render();
   },
   markDone(i){ if(this.done[i]) return; this.done[i]=true; store.set("done",this.done); this.refresh(); },
   refresh(){
     const n=Object.keys(this.done).filter(k=>this.done[k]).length;
-    $("#progress-fill").style.width=(n/16*100)+"%";
-    $("#progress-text").textContent=n+" / 16 章";
+    $("#progress-fill").style.width=(n/17*100)+"%";
+    $("#progress-text").textContent=n+" / 17 章";
     $("#progressbar").setAttribute("aria-valuenow",n);
     (this.buttons||[]).forEach((b,k)=>b.classList.toggle("is-done",!!this.done[k]));
     $$(".map-item").forEach(m=>m.classList.toggle("is-done",!!this.done[+m.dataset.idx]));
@@ -851,7 +905,7 @@ const Engine = {
     $("[data-clear-trials]",section).onclick=()=>{ this.trials[id]=[]; this.last[id]=null; this.renderTrials(section,cfg,id); };
     $("[data-to-record]",section).onclick=()=>{ Record.fromExperiment(cfg,id,this.trials[id],this.predicts[id]); Nav.go(13); };
     $("[data-prev]",section).onclick=()=>Nav.go(Math.max(0,idx-1));
-    $("[data-next]",section).onclick=()=>Nav.go(Math.min(15,idx+1));
+    $("[data-next]",section).onclick=()=>Nav.go(Math.min(16,idx+1));
   },
   renderTrials(section,cfg,id){
     const tb=$("[data-trials]",section), rows=this.trials[id];
@@ -1268,7 +1322,7 @@ const EXPERIMENTS = {
 /* ---------- 9. 伯努利漂浮球 ---------- */
 "bernoulli":{
   icon:"🎈", launchLabel:"🌬️ 開啟氣流",
-  question:"為什麼向上吹的氣流能把球托住，還會自己回到氣流中間？",
+  question:"為什麼向上吹的氣流能把球托住？球被撥開後，為什麼會邊轉邊滾回氣流中間？",
   predict:{q:"輕輕把球撥到旁邊，它會…", options:["自己回到氣流中間","直接掉下來","飛出去"]},
   controls:[
     {key:"wind",label:"風速",unit:"/10",min:1,max:10,step:1,value:6,primary:true},
@@ -1284,42 +1338,82 @@ const EXPERIMENTS = {
     const height=stable?clamp(Math.round(20+cap*10),10,90):0;
     const tol=stable?Math.round(s.wind*1.2+(s.rough==="rough"?3:0)):0;
     return {stable, height, metrics:{height:stable?height:0,stable:stable?"✅ 穩定漂浮":"✗ 掉落",tol},
-      readout: stable? "球停在氣流中約 <b>"+height+" cm</b> 高，可偏移約 "+tol+"° 還會自己回到中間。":
+      readout: stable? "球停在氣流中約 <b>"+height+" cm</b> 高，一邊被氣流帶著自轉，偏開約 "+tol+"° 內都會被<b>康達效應</b>拉回中間。":
         (s.mass>16||cap<0.4?"風力撐不住這顆球，掉下來了。試著加大風速或用更輕的球。":"氣流太強把球吹跑了，試著調小風速。")};
   },
-  scene:{ vb:"0 0 360 320", aria:"向上氣流托住輕球的伯努利漂浮球模擬，球可用滑鼠或觸控拖曳。",
-    html:p=>'<rect width="360" height="320" fill="#eef7ff"/>'+
-      '<g class="fan" transform="translate(180,300)"><rect x="-34" y="0" width="68" height="20" rx="4" fill="#334155"/><rect x="-24" y="-16" width="48" height="18" rx="4" fill="#475569"/></g>'+
-      '<g class="stream" opacity="0.5" stroke="#7dd3fc" stroke-width="3" fill="none"></g>'+
-      '<circle class="ball" cx="180" cy="150" r="18" fill="#fca5a5" stroke="#dc2626" stroke-width="2" style="cursor:grab"/>'+
-      '<text x="180" y="18" text-anchor="middle" font-size="12" fill="#0369a1" class="hint">開啟氣流後，可拖曳球試試看</text>',
-    build(svg){ const st=$(".stream",svg); let l=""; for(let i=-2;i<=2;i++){ l+='<path d="M'+(180+i*14)+' 284 q '+(i*10)+' -120 0 -240"/>'; } st.innerHTML=l;
-      const refs={ball:$(".ball",svg),stream:$(".stream",svg),fan:$(".fan",svg),svg,state:null,result:null};
-      // 拖曳
+  scene:{ vb:"0 0 360 330", aria:"康達效應漂浮球模擬：向上氣流托住球，球會自轉並被氣流拉回中央；可用滑鼠或觸控拖曳球。",
+    FANX:180, FANY:305,
+    html:p=>'<rect width="360" height="330" fill="#eef7ff"/>'+
+      '<text class="windT" x="10" y="20" font-size="12" fill="#0369a1"></text>'+
+      '<text class="hint" x="180" y="20" text-anchor="middle" font-size="11" fill="#0369a1">開啟氣流後，可拖曳球試試看</text>'+
+      '<g class="jetG">'+
+        '<g class="stream" opacity="0.25" stroke="#7dd3fc" stroke-width="3" fill="none"></g>'+
+        '<g class="fan"><rect x="146" y="305" width="68" height="20" rx="4" fill="#334155"/><rect x="156" y="289" width="48" height="18" rx="4" fill="#475569"/></g>'+
+      '</g>'+
+      '<g class="ballG" transform="translate(180,160)">'+
+        '<g class="ballRot"><circle class="ball" r="18" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/><g class="tex"></g></g>'+
+        '<text class="massT" font-size="9" text-anchor="middle" fill="#7f1d1d"></text>'+
+      '</g>',
+    build(svg,p){
+      const st=$(".stream",svg); let l=""; for(let i=-2;i<=2;i++){ l+='<path d="M'+(180+i*14)+' 300 q '+(i*10)+' -120 0 -250"/>'; } st.innerHTML=l;
+      const refs={ballG:$(".ballG",svg),ballRot:$(".ballRot",svg),ball:$(".ball",svg),tex:$(".tex",svg),massT:$(".massT",svg),
+        stream:$(".stream",svg),jetG:$(".jetG",svg),windT:$(".windT",svg),svg,state:null,result:null,baseX:180,baseY:160,spin:0,phase:0,dragging:false};
       let drag=false;
-      const toSvg=(e)=>{ const pt=svg.createSVGPoint(); const t=e.touches?e.touches[0]:e; pt.x=t.clientX; pt.y=t.clientY; const m=svg.getScreenCTM().inverse(); const p2=pt.matrixTransform(m); return p2; };
-      const down=e=>{ if(!refs.result) return; drag=true; refs.ball.style.cursor="grabbing"; e.preventDefault(); };
-      const move=e=>{ if(!drag) return; const p2=toSvg(e); refs.ball.setAttribute("cx",clamp(p2.x,20,340)); refs.ball.setAttribute("cy",clamp(p2.y,20,290)); e.preventDefault(); };
-      const up=()=>{ if(!drag) return; drag=false; refs.ball.style.cursor="grab"; Engine._bernoulliRelease&&Engine._bernoulliRelease(refs); };
+      const toSvg=e=>{ const pt=svg.createSVGPoint(); const t=e.touches?e.touches[0]:e; pt.x=t.clientX; pt.y=t.clientY; return pt.matrixTransform(svg.getScreenCTM().inverse()); };
+      const down=e=>{ if(!refs.result) return; drag=true; refs.dragging=true; refs.ball.style.cursor="grabbing"; e.preventDefault(); };
+      const move=e=>{ if(!drag) return; const q=toSvg(e); refs.baseX=clamp(q.x,20,340); refs.baseY=clamp(q.y,26,296);
+        refs.ballG.setAttribute("transform","translate("+refs.baseX.toFixed(1)+","+refs.baseY.toFixed(1)+")"); e.preventDefault(); };
+      const up=()=>{ if(!drag) return; drag=false; refs.dragging=false; refs.ball.style.cursor="grab"; Engine._coandaRelease&&Engine._coandaRelease(refs); };
+      refs.ball.style.cursor="grab";
       refs.ball.addEventListener("mousedown",down); svg.addEventListener("mousemove",move); window.addEventListener("mouseup",up);
       refs.ball.addEventListener("touchstart",down,{passive:false}); svg.addEventListener("touchmove",move,{passive:false}); window.addEventListener("touchend",up);
+      // 球在氣流中會持續「滾動自轉」並微幅浮動
+      (function loop(){ requestAnimationFrame(loop);
+        const ch=document.getElementById("chap-9");
+        if(!ch||!ch.classList.contains("is-active")||Settings.noAnim||!refs.result||!refs.state) return;
+        const s2=refs.state;
+        refs.spin += (0.8+s2.wind*0.6)*(s2.rough==="rough"?1.6:1)*Settings.speed; // 粗糙表面帶動更多空氣→轉更快
+        refs.ballRot.setAttribute("transform","rotate("+(refs.spin%360).toFixed(1)+")");
+        if(!refs.dragging && refs.result.stable){ refs.phase+=0.05*Settings.speed;
+          refs.ballG.setAttribute("transform","translate("+(refs.baseX+Math.sin(refs.phase*0.7)*4).toFixed(1)+","+(refs.baseY+Math.sin(refs.phase)*4).toFixed(1)+")"); }
+      })();
       return refs; },
-    preview(svg,refs,s){ refs.ball.setAttribute("r",6+s.ball*3); refs.stream.setAttribute("opacity","0.2"); },
-    run(svg,refs,s,res,done){ refs.state=s; refs.result=res; refs.stream.setAttribute("opacity","0.6");
-      const cx=180+Math.tan(s.angle*Math.PI/180)*60; refs.ball.setAttribute("r",6+s.ball*3);
-      const targetY=res.stable? 300-res.height*2.6 : 300-6-s.ball*3;
-      Engine._bernoulliRelease=(r)=>{ // 放手後回中或掉落
-        const cx2=180+Math.tan((r.state.angle)*Math.PI/180)*60;
-        const off=Math.abs(+r.ball.getAttribute("cx")-cx2);
-        const withinX=off < 60*(r.result.metrics.tol/20+0.4);
-        if(r.result.stable && withinX){ animate(500,t=>{ r.ball.setAttribute("cx",+r.ball.getAttribute("cx")+((cx2)-+r.ball.getAttribute("cx"))*0.2); r.ball.setAttribute("cy",+r.ball.getAttribute("cy")+((300-r.result.height*2.6)-+r.ball.getAttribute("cy"))*0.2); }); }
-        else { animate(600,t=>{ r.ball.setAttribute("cy",clamp(+r.ball.getAttribute("cy")+t*t*140,20,300)); }); }
+    ballPos(s,hPx){ const a=s.angle*Math.PI/180; return {x:this.FANX+Math.sin(a)*hPx, y:this.FANY-Math.cos(a)*hPx}; },
+    layout(refs,s){ const r=6+s.ball*3;
+      refs.ball.setAttribute("r",r);
+      let tx="";
+      if(s.rough==="smooth"){ tx='<ellipse cx="'+(-r*0.35).toFixed(1)+'" cy="'+(-r*0.4).toFixed(1)+'" rx="'+(r*0.3).toFixed(1)+'" ry="'+(r*0.2).toFixed(1)+'" fill="#fff" opacity="0.8"/>'; }
+      else { for(let i=0;i<10;i++){ const a=i/10*6.283, rr=r*0.62; tx+='<circle cx="'+(Math.cos(a)*rr).toFixed(1)+'" cy="'+(Math.sin(a)*rr).toFixed(1)+'" r="1.6" fill="#b91c1c" opacity="0.75"/>'; } }
+      tx+='<line x1="0" y1="'+(-r)+'" x2="0" y2="'+r+'" stroke="#b91c1c" stroke-width="1.5" opacity="0.55"/>'; // 轉動標記
+      refs.tex.innerHTML=tx;
+      if(!refs.ballRot.getAttribute("transform")) refs.ballRot.setAttribute("transform","rotate(0)"); // 自轉基準
+      const d=clamp(s.mass/20,0,1); refs.ball.setAttribute("fill", d>0.6?"#ef4444":(d>0.3?"#f87171":"#fca5a5")); // 越重顏色越深
+      refs.massT.textContent=s.mass+" g"; refs.massT.setAttribute("y",r+12);
+      refs.jetG.setAttribute("transform","rotate("+s.angle+" "+this.FANX+" "+this.FANY+")"); // 吹風角度真的把氣流吹歪
+      refs.stream.setAttribute("stroke-width",(1.5+s.wind*0.35).toFixed(1));
+      refs.windT.textContent="風速 "+s.wind+"/10"+(s.angle?"　吹風角度 "+s.angle+"°":"　垂直向上")+"　球表面："+(s.rough==="rough"?"粗糙":"光滑"); },
+    preview(svg,refs,s){ refs.state=s; this.layout(refs,s); refs.stream.setAttribute("opacity","0.25");
+      const p0=this.ballPos(s,150); refs.baseX=p0.x; refs.baseY=p0.y;
+      refs.ballG.setAttribute("transform","translate("+p0.x.toFixed(1)+","+p0.y.toFixed(1)+")"); },
+    run(svg,refs,s,res,done){ const self=this; refs.state=s; refs.result=res; this.layout(refs,s); refs.stream.setAttribute("opacity","0.7");
+      const hPx=res.stable? clamp(res.height*2.4,40,240) : 12+(6+s.ball*3);
+      const tgt=this.ballPos(s,hPx);
+      Engine._coandaRelease=(r)=>{ const st=r.state, rs=r.result;
+        const hp=rs.stable? clamp(rs.height*2.4,40,240) : 12+(6+st.ball*3);
+        const c=self.ballPos(st,hp), off=Math.hypot(r.baseX-c.x,r.baseY-c.y), sx=r.baseX, sy=r.baseY;
+        if(rs.stable && off < 45+rs.metrics.tol*3){   // 康達效應：氣流貼著球面偏轉，把球拉回氣流中央
+          animate(650,t=>{ const e=1-Math.pow(1-t,3); r.baseX=sx+(c.x-sx)*e; r.baseY=sy+(c.y-sy)*e;
+            r.ballG.setAttribute("transform","translate("+r.baseX.toFixed(1)+","+r.baseY.toFixed(1)+")"); });
+        } else { animate(700,t=>{ r.baseX=sx+t*18; r.baseY=clamp(sy+t*t*220,20,300);
+            r.ballG.setAttribute("transform","translate("+r.baseX.toFixed(1)+","+r.baseY.toFixed(1)+")"); }); }
       };
-      animate(700, t=>{ refs.ball.setAttribute("cx",180+(cx-180)*t); refs.ball.setAttribute("cy",150+(targetY-150)*t); }, done); }
+      const sx=refs.baseX, sy=refs.baseY;
+      animate(800,t=>{ refs.baseX=sx+(tgt.x-sx)*t; refs.baseY=sy+(tgt.y-sy)*t;
+        refs.ballG.setAttribute("transform","translate("+refs.baseX.toFixed(1)+","+refs.baseY.toFixed(1)+")"); }, done); }
   },
-  adv:"<p>漂浮球<strong>不能只用伯努利定律</strong>解釋。向上的快速氣流托住球對抗重力；當球偏一邊，另一側較快的氣流會<strong>偏轉（附壁效應）</strong>並把球推回中央，涉及<strong>壓力差、氣流偏轉帶來的動量改變與穩定平衡</strong>共同作用。若球太重或風速太小，氣流托不住就掉落；風速過大則被吹離氣流。</p>",
-  basicNote:"快速流動的空氣和周圍的壓力一起把球托住、拉回中間，不是單一原因造成的。",
-  think:"<ul><li>把球撥到旁邊，它會怎麼移動？</li><li>球太重時為什麼掉下來？</li><li>風速太大時又發生什麼事？</li></ul>"
+  adv:"<p>這主要是<strong>康達效應（Coandă effect）</strong>：流動的空氣會<strong>貼附在彎曲的球面上</strong>順著表面轉彎。當球偏離中心時，氣流貼著球面被<strong>偏轉</strong>到另一側，依牛頓第三定律，空氣就給球一個<strong>指回氣流中央</strong>的反作用力，於是球被拉回來、還會被帶動<strong>自轉</strong>（表面越粗糙帶動的空氣越多）。同時氣流與周圍的<strong>壓力差</strong>幫忙把球托住對抗重力。所以<strong>不能只用伯努利定律</strong>解釋——它是康達效應、氣流偏轉的動量改變、壓力差與穩定平衡共同作用的結果。球太重或風速太小會掉落；風速過大則被吹離氣流。</p>",
+  basicNote:"空氣會「黏」著球面轉彎（康達效應），把球推回氣流中間，同時快速氣流和周圍壓力一起把球托住，不是單一原因造成的。",
+  think:"<ul><li>把球撥到旁邊放手，它怎麼滾回去？</li><li>換成粗糙的球，轉動有什麼不同？</li><li>球太重時為什麼掉下來？風速太大又如何？</li><li>把吹風角度調成 20°，球會停在哪裡？</li></ul>"
 },
 
 /* ---------- 10. 飛行種子 ---------- */
@@ -1329,8 +1423,8 @@ const EXPERIMENTS = {
   predict:{q:"絨毛很多的種子(像蒲公英)會…", options:["慢慢飄很遠","快速旋轉","直直掉下"]},
   controls:[
     {key:"type",label:"種子種類",unit:"",type:"select",options:[{v:"maple",t:"楓樹翅果(旋轉)"},{v:"dande",t:"蒲公英(飄浮)"},{v:"glide",t:"翅果滑翔型"},{v:"diy",t:"自製紙種子"}]},
-    {key:"wingLen",label:"翅膀長度",unit:"cm",min:2,max:8,step:1,value:5,primary:true},
-    {key:"wingAngle",label:"翅膀角度",unit:"°",min:0,max:60,step:10,value:30},
+    {key:"wingLen",label:"翅膀長度",unit:"cm",min:2,max:8,step:1,value:5,primary:true,note:"翅膀越長，圖上的翅果也越長"},
+    {key:"wingAngle",label:"翅膀角度",unit:"°",min:0,max:60,step:10,value:30,note:"角度越大越容易被空氣推著旋轉（也改變翅膀傾斜）"},
     {key:"weight",label:"種子重量",unit:"g",min:0.1,max:2,step:0.1,value:0.5},
     {key:"fuzz",label:"絨毛密度",unit:"/10",min:0,max:10,step:1,value:0},
     {key:"wind",label:"風速",unit:"m/s",min:0,max:6,step:1,value:2},
@@ -1352,22 +1446,48 @@ const EXPERIMENTS = {
       readout:"這是<b>"+mode+"型</b>：下降 "+rnd2(ftime)+" s，隨風飄了 "+rnd2(drift)+" m"+(spins?"，旋轉 "+spins+" 圈":"")+"。"+
         (mode==="飄浮"?"絨毛增加空氣阻力，種子輕又慢，能被風帶到很遠。":mode==="旋轉"?"像螺旋槳一樣旋轉下降，滯空久、飄得遠。":"用薄翅滑翔離開母株。")};
   },
-  scene:{ vb:"0 0 400 300", aria:"飛行種子下降與隨風飄移的模擬。",
-    html:p=>'<rect width="400" height="270" fill="#eaf6ec"/><rect y="270" width="400" height="30" fill="#8fbf6a"/>'+
-      '<text class="wind" x="14" y="22" font-size="12" fill="#166534"></text>'+
-      '<g class="seed" transform="translate(120,20)"><g class="sbody"></g></g>',
-    build(svg){ return {seed:$(".seed",svg),sbody:$(".sbody",svg),wind:$(".wind",svg)}; },
-    draw(refs,mode){ let h;
-      if(mode==="飄浮") h='<circle r="3" fill="#7c4a12"/>'+[...Array(9)].map((_,i)=>{const a=i/9*6.28;return '<line x1="0" y1="0" x2="'+(Math.cos(a)*14).toFixed(0)+'" y2="'+(Math.sin(a)*14).toFixed(0)+'" stroke="#cbd5e1" stroke-width="1"/>';}).join("");
-      else if(mode==="旋轉") h='<path d="M0 0 q 26 -6 30 6 q -14 6 -30 -6 z" fill="#a3e635" stroke="#4d7c0f" stroke-width="1"/><circle cx="0" cy="2" r="4" fill="#7c4a12"/>';
-      else h='<path d="M-4 0 q 20 -10 34 -2 q -12 8 -34 4 z" fill="#bef264" stroke="#4d7c0f" stroke-width="1"/><circle cx="-4" cy="1" r="4" fill="#7c4a12"/>';
-      refs.sbody.innerHTML=h; },
-    preview(svg,refs,s){ this.draw(refs, s.type==="dande"?"飄浮":s.type==="maple"?"旋轉":"滑翔"); refs.seed.setAttribute("transform","translate(120,20)"); refs.wind.textContent="風 "+s.wind+" m/s →"; },
-    run(svg,refs,s,res,done){ this.draw(refs,res.mode); const endX=120+res.metrics.drift*30, spins=res.metrics.spins;
-      animate(Math.max(1200,res.metrics.ftime*700), t=>{ const y=20+240*t, x=120+(endX-120)*t;
-        refs.seed.setAttribute("transform","translate("+x+","+y+")");
-        if(res.mode==="旋轉"){ refs.sbody.setAttribute("transform","rotate("+(t*spins*360)+")"); refs.sbody.setAttribute("transform-origin","0 0"); }
-        else if(res.mode==="飄浮"){ refs.sbody.setAttribute("transform","translate("+(Math.sin(t*8)*10)+",0)"); } }, done); }
+  scene:{ vb:"0 0 400 320", aria:"飛行種子下降與隨風飄移的模擬：翅膀長度與角度會改變種子外形，左側高度表顯示離地高度。",
+    TOP:70, GROUND:300, X0:150, MAXH:10,
+    html:p=>'<rect width="400" height="300" fill="#eaf6ec"/><rect y="300" width="400" height="20" fill="#8fbf6a"/>'+
+      '<line x1="40" y1="70" x2="40" y2="300" stroke="#94a3b8" stroke-width="1.5"/>'+
+      '<g class="scale" fill="#475569" font-size="9" text-anchor="end"></g>'+
+      '<text class="wind" x="54" y="22" font-size="12" fill="#166534"></text>'+
+      '<text class="alt" x="388" y="22" font-size="13" fill="#166534" text-anchor="end" font-weight="bold"></text>'+
+      '<g class="seed" transform="translate(150,70)"><g class="sbody"></g></g>',
+    build(svg){ return {seed:$(".seed",svg),sbody:$(".sbody",svg),wind:$(".wind",svg),scale:$(".scale",svg),alt:$(".alt",svg)}; },
+    altToY(a){ return this.GROUND-(clamp(a,0,this.MAXH)/this.MAXH)*(this.GROUND-this.TOP); },
+    drawScale(refs){ let h=""; for(let a=0;a<=this.MAXH;a+=2){ const y=this.altToY(a); h+='<text x="34" y="'+(y+3)+'">'+a+'</text><line x1="35" y1="'+y+'" x2="41" y2="'+y+'" stroke="#94a3b8"/>'; }
+      h+='<text x="18" y="185" transform="rotate(-90 18 185)" text-anchor="middle" fill="#475569">高度(m)</text>'; refs.scale.innerHTML=h; },
+    // 三型外觀明顯不同，且隨翅膀長度/角度改變
+    draw(refs,mode,s){ const L=6+s.wingLen*5, tilt=s.wingAngle, h=[];
+      if(mode==="飄浮"){ const n=10, fl=8+s.fuzz*1.6;  // 蒲公英：中心種子＋放射狀絨毛
+        h.push('<line x1="0" y1="0" x2="0" y2="12" stroke="#7c4a12" stroke-width="1.5"/><ellipse cx="0" cy="15" rx="2.5" ry="4.5" fill="#7c4a12"/>');
+        for(let i=0;i<n;i++){ const a=-Math.PI/2 + (i-(n-1)/2)*(Math.PI/(n-0.6));
+          h.push('<line x1="0" y1="0" x2="'+(Math.cos(a)*fl).toFixed(1)+'" y2="'+(Math.sin(a)*fl).toFixed(1)+'" stroke="#cbd5e1" stroke-width="1.2"/>'); }
+      } else if(mode==="旋轉"){ // 楓樹翅果：單邊細長葉片＋一端種子（不對稱）
+        h.push('<g transform="rotate('+(-tilt*0.5)+')"><path d="M6 0 Q '+(L*0.55)+' '+(-L*0.30)+' '+L+' '+(-L*0.05)+' Q '+(L*0.6)+' '+(L*0.16)+' 6 4 Z" fill="#a3e635" stroke="#4d7c0f" stroke-width="1"/>'+
+          '<path d="M8 1 Q '+(L*0.6)+' '+(-L*0.08)+' '+(L*0.95)+' '+(-L*0.05)+'" fill="none" stroke="#4d7c0f" stroke-width="0.7" opacity="0.7"/></g>');
+        h.push('<ellipse cx="0" cy="2" rx="5" ry="6.5" fill="#7c4a12" stroke="#5b3610" stroke-width="1"/>');
+      } else { // 滑翔型翅果：左右對稱的寬薄雙翼（像滑翔翼）
+        const sp=L*0.95, ch=6+s.wingLen*1.1, dih=tilt*0.28;
+        h.push('<path d="M0 0 Q '+(-sp*0.5)+' '+(-dih-ch*0.9)+' '+(-sp)+' '+(-dih*0.5)+' Q '+(-sp*0.5)+' '+(ch*0.5-dih*0.4)+' 0 '+(ch*0.35)+' Z" fill="#bef264" stroke="#4d7c0f" stroke-width="1"/>');
+        h.push('<path d="M0 0 Q '+(sp*0.5)+' '+(-dih-ch*0.9)+' '+(sp)+' '+(-dih*0.5)+' Q '+(sp*0.5)+' '+(ch*0.5-dih*0.4)+' 0 '+(ch*0.35)+' Z" fill="#d9f99d" stroke="#4d7c0f" stroke-width="1"/>');
+        h.push('<ellipse cx="0" cy="2" rx="4" ry="5" fill="#7c4a12"/>');
+      }
+      refs.sbody.innerHTML=h.join(""); },
+    modeOf(s){ return (s.type==="dande"||s.fuzz>=6)?"飄浮":((s.type==="maple"||(s.wingAngle>=30&&s.wingLen>=5))?"旋轉":"滑翔"); },
+    preview(svg,refs,s){ this.drawScale(refs); this.draw(refs,this.modeOf(s),s);
+      refs.seed.setAttribute("transform","translate("+this.X0+","+this.altToY(s.dropH).toFixed(1)+")");
+      refs.sbody.setAttribute("transform",""); refs.wind.textContent="風 "+s.wind+" m/s →"; refs.alt.textContent="高度 "+s.dropH.toFixed(1)+" m"; },
+    run(svg,refs,s,res,done){ const self=this; this.drawScale(refs); this.draw(refs,res.mode,s);
+      const spins=res.metrics.spins, dropH=s.dropH, endX=clamp(this.X0+res.metrics.drift*26,60,380);
+      animate(Math.max(1200,res.metrics.ftime*700), t=>{ const a=dropH*(1-t), x=self.X0+(endX-self.X0)*t;
+        refs.seed.setAttribute("transform","translate("+x.toFixed(1)+","+self.altToY(a).toFixed(1)+")");
+        refs.alt.textContent="高度 "+a.toFixed(1)+" m";
+        if(res.mode==="旋轉"){ refs.sbody.setAttribute("transform","rotate("+(t*spins*360).toFixed(1)+")"); refs.sbody.setAttribute("transform-origin","0 0"); }
+        else if(res.mode==="飄浮"){ refs.sbody.setAttribute("transform","translate("+(Math.sin(t*8)*9).toFixed(1)+",0)"); }
+        else { refs.sbody.setAttribute("transform","rotate("+(Math.sin(t*4)*8).toFixed(1)+")"); refs.sbody.setAttribute("transform-origin","0 0"); } },
+        ()=>{ refs.alt.textContent="落地！0 m"; done(); }); }
   },
   adv:"<p>植物利用空氣傳播種子：<strong>蒲公英</strong>的絨毛大幅增加空氣阻力，種子又輕，能長時間飄浮、被風帶到很遠；<strong>楓樹翅果</strong>靠不對稱的翅旋轉（像自旋下降），減慢落速並隨風漂移；滑翔型種子則用薄翅滑翔。這是<strong>仿生設計</strong>的靈感來源——降落傘、直升機旋翼都借用了這些點子。試著設計你自己的仿生飛行器！</p>",
   think:"<ul><li>絨毛密度從 0 加到 10，下降時間怎麼變？</li><li>哪一種種子被風帶得最遠？為什麼？</li><li>你會模仿哪種種子設計飛行器？</li></ul>"
@@ -1400,18 +1520,56 @@ const EXPERIMENTS = {
       readout: finish? "速度 <b>"+rnd2(speed)+" m/s</b>，"+rnd2(time)+" s 跑完 10 m。":"帆推力不夠或摩擦太大，車子跑不動。"+
         (s.sail>=50&&s.carW<=40?" ⚠️ 帆太大又太輕，車子不穩，反而更慢——帆越大不一定越快！":"")+(s.windDir==="head"?" 逆風幾乎無法前進。":"")};
   },
-  scene:{ vb:"0 0 640 220", aria:"風帆車在賽道上前進的模擬。",
-    html:p=>'<rect width="640" height="220" fill="#e0f2fe"/><rect y="180" width="640" height="40" fill="#cbd5e1"/>'+
-      '<line x1="600" y1="60" x2="600" y2="180" stroke="#16a34a" stroke-width="3" stroke-dasharray="6 4"/><text x="600" y="52" text-anchor="middle" font-size="12" fill="#16a34a">終點</text>'+
-      '<g class="wind" fill="#0369a1" font-size="12"></g>'+
-      '<g class="car" transform="translate(50,180)"><rect x="-24" y="-16" width="48" height="12" rx="3" fill="#1d4ed8"/><circle cx="-14" cy="0" r="8" fill="#334155"/><circle cx="14" cy="0" r="8" fill="#334155"/>'+
-        '<line x1="0" y1="-16" x2="0" y2="-58" stroke="#78350f" stroke-width="3"/><path class="sail" d="M0 -56 q 26 12 0 40 z" fill="#f59e0b" stroke="#b45309" stroke-width="1.5"/></g>',
-    build(svg){ return {car:$(".car",svg),sail:$(".sail",svg),wind:$(".wind",svg)}; },
-    preview(svg,refs,s){ refs.car.setAttribute("transform","translate(50,180)"); const h=30+s.sail*0.9;
-      refs.sail.setAttribute("d","M0 -56 q "+(s.shape==="curve"?34:22)+" "+(h/2)+" 0 "+h+" z");
-      const dir={tail:"→ 順風",side:"↗ 側風",head:"← 逆風"}[s.windDir]; refs.wind.innerHTML='<text x="20" y="30">風 '+s.wind+'/10 '+dir+'</text>'; },
-    run(svg,refs,s,res,done){ const endX=res.metrics.finish.includes("到")?600:50+res.speed*60;
-      animate(Math.max(1000,(res.metrics.time||3)*500), t=>{ refs.car.setAttribute("transform","translate("+(50+(endX-50)*t)+",180)"); }, done); }
+  scene:{ vb:"0 0 640 240", aria:"風帆車在賽道上前進的模擬：帆面大小往上加高、平板與曲面外形不同、帆面角度會轉動、車體重量與車輪摩擦也會反映在圖上。",
+    Y:200, X0:60,
+    html:p=>'<rect width="640" height="240" fill="#e0f2fe"/><rect y="200" width="640" height="40" fill="#cbd5e1"/>'+
+      '<line x1="600" y1="40" x2="600" y2="200" stroke="#16a34a" stroke-width="3" stroke-dasharray="6 4"/><text x="600" y="34" text-anchor="middle" font-size="12" fill="#16a34a">終點</text>'+
+      '<text class="wind" x="18" y="26" font-size="12" fill="#0369a1"></text>'+
+      '<g class="windArrows" stroke="#38bdf8" stroke-width="2" fill="none" opacity="0.7"></g>'+
+      '<g class="car" transform="translate(60,200)">'+
+        '<line class="mast" x1="0" y1="-16" x2="0" y2="-60" stroke="#78350f" stroke-width="3"/>'+
+        '<path class="sail" d="" fill="#f59e0b" stroke="#b45309" stroke-width="1.5"/>'+
+        '<rect class="body" x="-24" y="-16" width="48" height="12" rx="3" fill="#1d4ed8"/>'+
+        '<g class="wheels"></g>'+
+      '</g>',
+    build(svg){ return {car:$(".car",svg),sail:$(".sail",svg),mast:$(".mast",svg),body:$(".body",svg),wheels:$(".wheels",svg),wind:$(".wind",svg),windArrows:$(".windArrows",svg)}; },
+    layout(refs,s){
+      // 車體：越重車身越大越厚（並加重色）
+      const bw=40+s.carW*0.18, bh=9+s.carW*0.07;
+      refs.body.setAttribute("x",-bw/2); refs.body.setAttribute("width",bw);
+      refs.body.setAttribute("y",-4-bh); refs.body.setAttribute("height",bh);
+      refs.body.setAttribute("fill", s.carW>=90?"#1e3a8a":(s.carW>=55?"#1d4ed8":"#3b82f6"));
+      // 車輪：摩擦越大輪面越粗糙（鋸齒）、顏色越深
+      const wr=7+s.carW*0.02, fr=s.friction;
+      let wh="";
+      [-bw*0.3,bw*0.3].forEach(cx=>{
+        wh+='<circle cx="'+cx.toFixed(1)+'" cy="0" r="'+wr.toFixed(1)+'" fill="'+(fr==="hi"?"#78350f":fr==="mid"?"#475569":"#334155")+'" stroke="'+(fr==="hi"?"#451a03":"#1e293b")+'" stroke-width="1.5"/>';
+        if(fr==="lo"){ wh+='<circle cx="'+cx.toFixed(1)+'" cy="0" r="'+(wr*0.42).toFixed(1)+'" fill="#e2e8f0"/><circle cx="'+(cx-wr*0.3).toFixed(1)+'" cy="'+(-wr*0.35).toFixed(1)+'" r="1.6" fill="#fff" opacity="0.9"/>'; }
+        else { const n=fr==="hi"?10:6; for(let i=0;i<n;i++){ const a=i/n*6.283; wh+='<line x1="'+(cx+Math.cos(a)*wr*0.55).toFixed(1)+'" y1="'+(Math.sin(a)*wr*0.55).toFixed(1)+'" x2="'+(cx+Math.cos(a)*wr).toFixed(1)+'" y2="'+(Math.sin(a)*wr).toFixed(1)+'" stroke="#e2e8f0" stroke-width="'+(fr==="hi"?1.6:1.1)+'"/>'; } }
+      });
+      if(fr==="hi"){ wh+='<text x="0" y="20" font-size="9" text-anchor="middle" fill="#78350f">摩擦大</text>'; }
+      else if(fr==="lo"){ wh+='<text x="0" y="20" font-size="9" text-anchor="middle" fill="#334155">順滑</text>'; }
+      refs.wheels.innerHTML=wh;
+      // 桅杆與帆：帆面只往「車子以上」加高
+      const top=-4-bh, H=18+s.sail*1.1;           // 帆高（往上長）
+      const mastTop=top-H-6;
+      refs.mast.setAttribute("y1",top); refs.mast.setAttribute("y2",mastTop);
+      // 帆面角度：0°=側對風(幾乎看不到面)、90°=正對風(最寬)
+      const w=(10+s.sail*0.8)*Math.max(0.12,Math.sin(s.sailAngle*Math.PI/180));
+      const yTop=mastTop+4, yBot=top-2;
+      const d = s.shape==="curve"
+        ? "M0 "+yTop+" Q "+(w*1.35).toFixed(1)+" "+((yTop+yBot)/2).toFixed(1)+" 0 "+yBot+" Z"      // 曲面：鼓起的弧
+        : "M0 "+yTop+" L "+w.toFixed(1)+" "+(yTop+6).toFixed(1)+" L "+w.toFixed(1)+" "+(yBot-6).toFixed(1)+" L 0 "+yBot+" Z"; // 平板：平直板
+      refs.sail.setAttribute("d",d);
+      refs.sail.setAttribute("fill", s.shape==="curve"?"#f59e0b":"#fbbf24");
+      const dir={tail:"→ 順風",side:"↗ 側風",head:"← 逆風"}[s.windDir];
+      refs.wind.textContent="風 "+s.wind+"/10 "+dir+"　帆面角度 "+s.sailAngle+"°　"+(s.shape==="curve"?"曲面帆":"平板帆");
+      let wa=""; for(let i=0;i<3;i++){ const y=50+i*34; wa+='<path d="M12 '+y+' L'+(40+s.wind*4)+' '+y+'"/><path d="M'+(34+s.wind*4)+' '+(y-4)+' L'+(40+s.wind*4)+' '+y+' L'+(34+s.wind*4)+' '+(y+4)+'"/>'; }
+      refs.windArrows.innerHTML=wa; },
+    preview(svg,refs,s){ this.layout(refs,s); refs.car.setAttribute("transform","translate("+this.X0+","+this.Y+")"); },
+    run(svg,refs,s,res,done){ const self=this; this.layout(refs,s);
+      const endX=res.metrics.finish.indexOf("到")>=0?600:clamp(this.X0+res.speed*60,this.X0,600);
+      animate(Math.max(1000,(res.metrics.time||3)*500), t=>{ refs.car.setAttribute("transform","translate("+(self.X0+(endX-self.X0)*t).toFixed(1)+","+self.Y+")"); }, done); }
   },
   adv:"<p>風推動帆產生前進的力，但<strong>帆越大不一定越快</strong>：帆太大、車太輕會不穩、阻力也增加；帆面<strong>角度</strong>要配合<strong>風向</strong>（順風時帆幾乎垂直於風最有力，逆風幾乎無法直接前進）。速度是<strong>風力、帆面、角度、車重與車輪摩擦</strong>共同決定的結果，不能只看單一變因。</p>",
   think:"<ul><li>固定風速，帆從 10 加到 60，速度一直變快嗎？</li><li>順風和逆風差多少？</li><li>怎樣的組合最快？</li></ul>"
@@ -1453,27 +1611,44 @@ const EXPERIMENTS = {
       '<text class="lo" font-size="12" fill="#0369a1"></text><text class="hi" font-size="12" fill="#b91c1c"></text>'+
       '<text class="stallT" x="320" y="40" text-anchor="middle" font-size="16" font-weight="bold" fill="#dc2626" opacity="0"></text>',
     build(svg,p){ return {flows:$(".flows",svg),wing:$(".wing",svg),foil:$(".foil",svg),arrows:$(".arrows",svg),lo:$(".lo",svg),hi:$(".hi",svg),stallT:$(".stallT",svg),svg,pfx:p}; },
-    foilPath(shape){ return shape==="stream"? "M-70 0 q 30 -26 70 -6 q 40 20 70 6 q -40 16 -140 0 z" : "M-70 -4 L70 -4 L70 4 L-70 4 Z"; },
-    render(refs,s,res){ const p=refs.pfx;
-      refs.wing.setAttribute("transform","translate(300,160) rotate("+(-s.aoa)+")");
-      refs.foil.setAttribute("d",this.foilPath(s.shape));
-      // 氣流：上方偏轉向下（下洗），失速時上方紊亂
+    // 弦長隨機翼面積改變；平板畫成有厚度、前後緣圓潤的薄板
+    chord(s){ return 46+s.area*0.86; },
+    foilPath(shape,c){ const h=c*0.13;
+      return shape==="stream"
+        ? "M"+(-c/2)+" 0 Q "+(-c*0.22)+" "+(-h*1.7)+" "+(c*0.06)+" "+(-h*0.95)+" Q "+(c*0.34)+" "+(-h*0.2)+" "+(c/2)+" 1 Q "+(c*0.1)+" "+(h*0.85)+" "+(-c/2)+" 0 Z"
+        : "M"+(-c/2)+" "+(-2.6)+" L "+(c/2)+" "+(-2.6)+" Q "+(c/2+3)+" 0 "+(c/2)+" 2.6 L "+(-c/2)+" 2.6 Q "+(-c/2-3)+" 0 "+(-c/2)+" "+(-2.6)+" Z"; },
+    render(refs,s,res){ const p=refs.pfx, c=this.chord(s), CX=300, CY=160;
+      refs.wing.setAttribute("transform","translate("+CX+","+CY+") rotate("+(-s.aoa)+")");
+      refs.foil.setAttribute("d",this.foilPath(s.shape,c));
       const stall=res? res.stall : s.aoa>(s.shape==="stream"?16:11);
+      const xL=CX-c/2, xT=CX+c/2;                       // 前緣、後緣
+      const dw=s.aoa*1.1+(s.shape==="stream"?4:2);      // 下洗量（隨迎角）
+      // 氣流：從左方流過整個機翼上下，並在後緣形成尾流(下洗/分離)
       let f="";
-      for(let i=0;i<5;i++){ const y=80+i*32; const dip=(y<160?18:8);
-        if(stall && y<160){ f+='<path d="M40 '+y+' q 120 0 200 '+(y<130?-6:0)+' q 40 20 20 30" stroke-dasharray="4 4"/>'; }
-        else { f+='<path d="M40 '+y+' q 140 '+(y<160?-8:6)+' 230 '+(y<160? -8+s.aoa*0.8 : 10+s.aoa*0.6)+'"/>'; } }
+      for(let i=0;i<7;i++){
+        const y=64+i*30, above=y<CY, near=Math.abs(y-CY)<46;
+        const bend=above? -(near?12:5) : (near?9:4);
+        if(stall && above && near){  // 失速：上表面氣流分離、後方捲起紊流
+          f+='<path d="M20 '+y+' Q '+(xL-10)+' '+(y-4)+' '+(CX-6)+' '+(y-10)+' q 18 2 26 14 q -14 8 -24 -2 q 16 14 34 6" stroke-dasharray="5 4" opacity="0.95"/>';
+        } else {
+          f+='<path d="M20 '+y+' Q '+(xL+6)+' '+(y+bend*0.55)+' '+CX+' '+(y+bend)+' Q '+(xT+18)+' '+(y+bend+dw*0.5)+' 620 '+(y+bend+dw)+'"/>';
+        }
+      }
+      // 後緣尾流標示
+      f+='<path d="M'+(xT+4)+' '+(CY+2)+' Q '+(xT+60)+' '+(CY+dw*0.7)+' 618 '+(CY+dw)+'" stroke="#0ea5e9" stroke-width="2.5" stroke-dasharray="7 5" opacity="0.85"/>';
       refs.flows.innerHTML=f;
-      // 受力箭頭
-      const scale=res? clamp(res.lift*40,10,90):40, dscale=res?clamp(res.drag*40,8,60):20;
+      refs.stallT.setAttribute("opacity",stall?"1":"0"); refs.stallT.textContent=stall?"⚠️ 失速！氣流從上表面分離，後方變成紊亂尾流":"";
+      // 受力箭頭（縮小，不要太大）
+      const ls=res? clamp(res.lift*22,10,58):26, ds=res?clamp(res.drag*22,7,34):14, ws=res?clamp(res.weightN*22,10,58):26;
       refs.arrows.innerHTML =
-        arr(p,"lift",300,150,300,150-scale,5)+ '<text x="308" y="'+(150-scale+4)+'" font-size="12" fill="#0a8a4a">升力</text>'+
-        arr(p,"weight",300,172,300,172+ (res?clamp(res.weightN*40,10,90):40),5)+ '<text x="308" y="'+(172+40)+'" font-size="12" fill="#c2410c">重力</text>'+
-        arr(p,"drag",300,160,300+dscale,160,5)+ '<text x="'+(300+dscale)+'" y="150" font-size="12" fill="#7c3aed">阻力</text>'+
-        arr(p,"thrust",240,160,200,160,5)+ '<text x="196" y="150" font-size="12" fill="#1d4ed8" text-anchor="end">推力/氣流</text>';
-      refs.lo.setAttribute("x",250); refs.lo.setAttribute("y",120); refs.lo.textContent= s.shape==="flat"?"":"上方：流速較快、壓力較低";
-      refs.hi.setAttribute("x",250); refs.hi.setAttribute("y",210); refs.hi.textContent= s.shape==="flat"?"":"下方：壓力較高";
-      refs.stallT.setAttribute("opacity",stall?"1":"0"); refs.stallT.textContent=stall?"⚠️ 失速！氣流分離":"";
+        arr(p,"lift",CX,CY-10,CX,CY-10-ls,3.5)+ '<text x="'+(CX+7)+'" y="'+(CY-10-ls+4)+'" font-size="12" fill="#0a8a4a">升力</text>'+
+        arr(p,"weight",CX,CY+10,CX,CY+10+ws,3.5)+ '<text x="'+(CX+7)+'" y="'+(CY+10+ws)+'" font-size="12" fill="#c2410c">重力</text>'+
+        arr(p,"drag",CX+c*0.3,CY,CX+c*0.3+ds,CY,3.5)+ '<text x="'+(CX+c*0.3+ds+4)+'" y="'+(CY-6)+'" font-size="12" fill="#7c3aed">阻力</text>'+
+        arr(p,"thrust",xL-26,CY,xL-64,CY,3.5)+ '<text x="'+(xL-68)+'" y="'+(CY-9)+'" font-size="15" font-weight="bold" fill="#1d4ed8" text-anchor="end">推力／氣流</text>';
+      refs.lo.setAttribute("x",CX-10); refs.lo.setAttribute("y",CY-58); refs.lo.setAttribute("text-anchor","middle");
+      refs.lo.textContent= stall? "上方：氣流分離" : "上方：流速較快、壓力較低";
+      refs.hi.setAttribute("x",CX-10); refs.hi.setAttribute("y",CY+64); refs.hi.setAttribute("text-anchor","middle");
+      refs.hi.textContent="下方：壓力較高（氣流被往下偏轉 →）";
     },
     preview(svg,refs,s){ this.render(refs,s,null); },
     run(svg,refs,s,res,done){ this.render(refs,s,res); animate(600,()=>{},done); }
@@ -1594,7 +1769,7 @@ const MYTHS=[
   ["空氣砲發射的是一顆看不見的固體球。","不是固體。它是一圈旋轉的<strong>空氣渦環</strong>，中間快、邊緣慢捲成甜甜圈狀，所以又穩又能飛遠。"],
   ["降落傘越大，下降速度一定可以無限變慢。","不會無限變慢。當<strong>空氣阻力與重力平衡</strong>，速度就固定在終端速度。傘再大也有極限，還要考慮重量。"],
   ["較重的物體在所有情況下都一定比較快落地。","不一定。有<strong>空氣阻力</strong>時，形狀與表面積很關鍵：一張攤開的紙比揉成團的同一張紙落得慢。"],
-  ["吹風機上的球漂浮，只能用伯努利定律解釋。","不只如此。還牽涉<strong>氣流偏轉造成的動量改變、壓力差與穩定平衡</strong>，多個因素共同把球托住並拉回中央。"],
+  ["吹風機上的球漂浮，只能用伯努利定律解釋。","不只如此。空氣會貼著球面轉彎的<strong>康達效應</strong>、氣流偏轉造成的<strong>動量改變</strong>、<strong>壓力差</strong>與穩定平衡，多個因素共同把球托住並拉回中央。"],
   ["飛機能飛，只是因為機翼上方空氣走得比較遠、比較快。","這是<strong>常見的錯誤理論</strong>。升力主要來自機翼把空氣<strong>向下偏轉</strong>（反作用力）與上下<strong>壓力差</strong>，不是「等時通過」。"],
   ["種子旋轉只是巧合，和傳播沒有關係。","不是巧合。旋轉（如楓樹翅果）與絨毛飄浮（如蒲公英）都能<strong>減慢落速、隨風傳得更遠</strong>，是植物的傳播策略。"]
 ];
